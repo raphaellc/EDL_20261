@@ -7,6 +7,10 @@ Este repositório centraliza as atividades práticas da disciplina. Utilizaremos
 
 ---
 
+## Configurações de Software
+### Linguagem de Programação
+* Java - JDK 25.0.2
+
 ## 📂 1. Organização de Diretórios
 
 Para que o corretor automático identifique sua entrega, a estrutura de pastas deve seguir rigorosamente este padrão:
