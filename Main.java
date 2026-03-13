@@ -70,12 +70,19 @@ public class Main {
 				System.out.println("Vetor de 10 numeros ao contrario: " + vetor.reversed());
 				
 				System.out.println("Maior e Menor valor do vetor: " + vetor.get(0) + " , " + vetor.get(9));
-				
+						
 				int sum = 0;
 				for (Integer total : vetor) { sum += total;	}
 				
 				System.out.println("Soma de Todos os valores do vetor: " + sum);
 				
+				vetor.remove(0);
+				vetor.addLast(1);
+				System.out.println("Vetor Esquerdado: " + vetor);
+				
+				vetor.remove(0);
+				vetor.addLast(2);
+				System.out.println("Vetor mais Esquerdado: " + vetor);
 				
 				menu = 0;
 			}
