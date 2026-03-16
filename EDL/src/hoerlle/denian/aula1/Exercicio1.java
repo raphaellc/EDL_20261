@@ -6,8 +6,6 @@ import java.util.Scanner;
 // preenchido com cinco letras (informadas pelo usuário) distribuídas
 // aleatoriamente.
 public class Exercicio1 {
-
-
     public static void main(String[] args) {
         Scanner scan = new Scanner(System.in);
 
@@ -23,8 +21,9 @@ public class Exercicio1 {
             for(int j = 0; j < 5; j++)
                 board[i][j] = selectedChars[generateRandomNumber()];
 
-
         printBoard(board);
+
+        scan.close();
     }
 
     public static char readCharFromInput(Scanner scan) {
@@ -51,8 +50,10 @@ public class Exercicio1 {
         return newChar;
     }
 
+    // https://www.geeksforgeeks.org/java/generating-random-numbers-in-java/
     public static int generateRandomNumber() {
-        return (int)(Math.random() * ((4) + 1));
+        int max = 4;
+        return (int)(Math.random() * ((max) + 1));
     }
 
     public static void printBoard(char[][] board) {
