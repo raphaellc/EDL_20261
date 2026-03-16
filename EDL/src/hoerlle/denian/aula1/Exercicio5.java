@@ -39,7 +39,7 @@ public class Exercicio5 {
 
     // https://www.geeksforgeeks.org/java/generating-random-numbers-in-java/
     public static int generateRandomNumber() {
-        int min = 20, max = 50;
+        int min = 0, max = 100;
         return min + (int)(Math.random() * ((max - min) + 1));
     }
 

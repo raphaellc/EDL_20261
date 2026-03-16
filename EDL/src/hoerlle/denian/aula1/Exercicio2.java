@@ -28,7 +28,7 @@ class Produto {
 
     Produto(float preco, int estoque) {
         this.preco = preco > 0 ? preco : 0;
-        this.estoque = estoque > 0 ? estoque : 0;
+        this.estoque = Math.max(estoque, 0);
     }
 
     public float getPreco() {
