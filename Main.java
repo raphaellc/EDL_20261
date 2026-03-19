@@ -13,7 +13,8 @@ public class Main {
 			
 			System.out.println("Escolha o exercicio:\n"
 					+ " 1 - Aula passada \n"
-					+ " 2 - Paranaues de Vetor");
+					+ " 2 - Paranaues de Vetor \n"
+					+ " 3 - Panificadora ''Sabor Caseiro'' da Desgraça \n");
 			
 			Scanner cin = new Scanner(System.in);
 			
@@ -86,7 +87,13 @@ public class Main {
 				
 				menu = 0;
 			}
-	    
+			
+			else if (choice == 3) {
+				System.out.println("Work in Progress (W.I.P.)");
+				
+				
+				menu = 0;
+			}
 		}
 		
 	}
