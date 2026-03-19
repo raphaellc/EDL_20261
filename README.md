@@ -32,43 +32,6 @@ Devem ser colocados em uma pasta específica na **raiz do repositório**.
 Siga estes passos para cada nova atividade:
 
 1.  **Sincronize seu repositório local:**
-    ```bash
-    git checkout entrega
-    git pull origin entrega
-    ```
-2.  **Crie uma branch para sua tarefa:**
-    * *Individual:* `git checkout -b feature/nome-aluno-ex1`
-    * *Grupo:* `git checkout -b feature/nome-do-grupo`
-3.  **Desenvolva e Commite:** Certifique-se de que seu código compila localmente.
-4.  **Envie para o GitHub:**
-    ```bash
-    git push origin sua-branch-de-entrega
-    ```
-5.  **Abra um Pull Request (PR):** No GitHub, solicite o merge da sua branch para a branch **`entrega`**.
-
----
-
-## ✅ 3. Regras de Ouro e Automação
-
-* **Compilação Obrigatória:** Ao abrir um PR, o **GitHub Actions** tentará compilar seu código Java automaticamente. 
-    * ✅ **Verde:** O código compila. O professor fará a revisão lógica.
-    * ❌ **Vermelho:** O código falhou. **A entrega não será avaliada** até que você corrija os erros e faça o push novamente no mesmo PR.
-* **Acesso e Permissões:** * A branch `entrega` é protegida. Pushes diretos serão rejeitados.
-    * Apenas o **Professor (Admin)** tem permissão para aprovar e finalizar o Merge dos PRs.
-* **Ética e Colaboração:** Embora todos sejam colaboradores, é expressamente proibido alterar arquivos nas branches dos demais e na branch entregas.
-
-# Guia de Contribuição e Boas Práticas
-
-Para manter a qualidade, coesão e legibilidade do nosso código, adotamos as seguintes convenções e práticas de arquitetura de software para os exercícios e desafios deste repositório.
-
----
-
-## 4. Guia de Contribuição
-### Convenções de Nomenclatura (Padrão Java) ☕
-
-Seguimos as convenções oficiais da linguagem para garantir que o código seja idiomático:
-
-* **Classes e Interfaces:** Devem utilizar `PascalCase` (ex: `CalculadoraDeEstoque`, `Pagamento`). O nome do arquivo `.java` deve ser exatamente igual ao da classe pública.
-* **Métodos e Atributos:** Devem utilizar `camelCase`, iniciando com a primeira letra minúscula (ex: `mostrarDetalhes()`, `valorDiaria`).
-* **Constantes:** Escritas em `UPPER_SNAKE_CASE` e declaradas como `static final` (ex: `TAXA_A_RETER`).
-* **Pacotes (Packages):** Escritos totalmente em letras minúsculas, utilizando o domínio reverso (ex: `br.com.empresa.projeto`) para evitar ambiguidade.
+```bash
+git checkout entrega
+git pull origin entrega
