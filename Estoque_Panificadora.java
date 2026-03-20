@@ -6,15 +6,14 @@ public class Estoque_Panificadora {
 
 	private ArrayList<String> estoque = new ArrayList<String>();
 	
-	private int num;
-	
-	public Estoque_Panificadora(int num, ArrayList<String> estoque) {
-		this.num = num;
+	public Estoque_Panificadora(ArrayList<String> estoque) {
 		this.estoque = estoque;
-	};
-	
-	public int getOrdem() {
-		return this.num;
+		
+		estoque.add("Pão Françês");
+		estoque.add("Bolo de Cenoura");
+		estoque.add("Pão de Queijo");
+		estoque.add("Sonho");
+		estoque.add("Bolo de Cenoura");
 	};
 
 	public ArrayList<String> getEstoque() {
