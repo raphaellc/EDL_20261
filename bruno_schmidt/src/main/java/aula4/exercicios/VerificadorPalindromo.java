@@ -20,9 +20,6 @@ public class VerificadorPalindromo {
             return buff;
         }
 
-        // Isso aqui é apenas pra manter a imutabilidade do array
-        // No Java os arrays são como objetos, não são pass by reference mas
-        // o valor do objeto é a referência dele, para arrays é o mesmo.
         var posDestino = palavra.length - pos - 1;
         buff[posDestino] = palavra[pos];
 
