@@ -1,4 +1,4 @@
-package aula4.exercicios;
+package aula4.exercicios.a;
 
 import static org.junit.jupiter.api.Assertions.*;
 

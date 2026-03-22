@@ -1,4 +1,4 @@
-package aula4.exercicios;
+package aula4.exercicios.c;
 
 public class ContadorCaractere {
     public static int contar(char c, String s) {

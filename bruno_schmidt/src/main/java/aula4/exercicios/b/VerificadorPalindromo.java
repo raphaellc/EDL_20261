@@ -1,4 +1,4 @@
-package aula4.exercicios;
+package aula4.exercicios.b;
 
 public class VerificadorPalindromo {
     public static boolean isPalindromo(String palavra) {

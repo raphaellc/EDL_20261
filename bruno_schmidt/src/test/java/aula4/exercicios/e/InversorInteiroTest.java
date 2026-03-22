@@ -1,4 +1,4 @@
-package aula4.exercicios;
+package aula4.exercicios.e;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 

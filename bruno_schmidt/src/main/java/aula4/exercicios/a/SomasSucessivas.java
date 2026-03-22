@@ -1,4 +1,4 @@
-package aula4.exercicios;
+package aula4.exercicios.a;
 
 public class SomasSucessivas {
     public static int multiplicar(int x, int y) {

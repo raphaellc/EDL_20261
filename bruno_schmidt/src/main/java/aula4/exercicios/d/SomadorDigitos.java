@@ -1,4 +1,4 @@
-package aula4.exercicios;
+package aula4.exercicios.d;
 
 public class SomadorDigitos {
     public static int somar(int n) {

@@ -1,7 +1,7 @@
-package aula4.exercicios;
+package aula4.exercicios.f;
 
-import static aula4.exercicios.EscritorInteirosEmOrdem.Ordem.CRESCENTE;
-import static aula4.exercicios.EscritorInteirosEmOrdem.Ordem.DECRESCENTE;
+import static aula4.exercicios.f.EscritorInteirosEmOrdem.Ordem.CRESCENTE;
+import static aula4.exercicios.f.EscritorInteirosEmOrdem.Ordem.DECRESCENTE;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.io.ByteArrayOutputStream;

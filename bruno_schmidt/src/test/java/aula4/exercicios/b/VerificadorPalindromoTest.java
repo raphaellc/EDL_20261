@@ -1,6 +1,6 @@
-package aula4.exercicios;
+package aula4.exercicios.b;
 
-import static aula4.exercicios.VerificadorPalindromo.isPalindromo;
+import static aula4.exercicios.b.VerificadorPalindromo.isPalindromo;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;

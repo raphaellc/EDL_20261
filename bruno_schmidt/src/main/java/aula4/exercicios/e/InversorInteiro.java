@@ -1,4 +1,4 @@
-package aula4.exercicios;
+package aula4.exercicios.e;
 
 public class InversorInteiro {
     public static int inverter(int n) {
