@@ -1,6 +1,6 @@
 package exerciciosentrega3;
 
-public class dobro_mais_tres1_6 {
+public class exercicio1_6dobro_mais_tres {
     public static long dobra_adiciona_tres(int n){
         if (n == 0){
             return 3;

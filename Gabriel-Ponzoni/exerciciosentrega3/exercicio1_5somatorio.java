@@ -3,7 +3,7 @@ package exerciciosentrega3;
 import java.util.ArrayList;
 import java.util.List;
 
-public class somatorio1_5 {
+public class exercicio1_5somatorio {
     public static long somatorio(int n, List<Integer> a){
         if (n == 0){
             return a.get(0);

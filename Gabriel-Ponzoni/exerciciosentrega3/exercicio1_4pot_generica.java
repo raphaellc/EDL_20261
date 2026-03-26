@@ -1,6 +1,6 @@
 package exerciciosentrega3;
 
-public class pot_generica1_4 {
+public class exercicio1_4pot_generica {
     public static long potencia_generica(int a, int n){
         if (n == 0){
             return 1;

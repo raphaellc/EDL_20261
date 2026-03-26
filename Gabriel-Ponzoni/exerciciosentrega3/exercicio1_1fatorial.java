@@ -1,6 +1,6 @@
 package exerciciosentrega3;
 
-public class fatorial1_1 {
+public class exercicio1_1fatorial {
     public static long fatorial(int n){
         IO.println("Calculando: " + n + "!");
         if (n < 1){

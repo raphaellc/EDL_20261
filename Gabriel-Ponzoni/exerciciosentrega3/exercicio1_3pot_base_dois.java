@@ -1,6 +1,6 @@
 package exerciciosentrega3;
 
-public class pot_base_dois_1_3 {
+public class exercicio1_3pot_base_dois {
     public static long potencia_base_2(int n){
         if (n == 0){
             return 1;

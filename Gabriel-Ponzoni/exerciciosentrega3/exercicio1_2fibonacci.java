@@ -1,6 +1,6 @@
 package exerciciosentrega3;
 
-public class fibonacci1_2 {
+public class exercicio1_2fibonacci {
     public static long fibonacci(int n){
         if (n <= 1){
             return n;
