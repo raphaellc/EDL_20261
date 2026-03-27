@@ -3,9 +3,11 @@ package pimentel.luiza.aula1.exercicio1;
 import java.util.Random;
 import java.util.Scanner;
 
-// 1. Crie um tabuleiro com n linhas por m colunas. Esse tabuleiro deve ser preenchido com cinco letras (informadas pelo usuário) distribuídas aleatoriamente.
+// 1. Crie um tabuleiro com n linhas por m colunas. 
+// Esse tabuleiro deve ser preenchido com cinco letras 
+// (informadas pelo usuário) distribuídas aleatoriamente.
 
-public class Tabuleiro {
+public class Exercicio1 {
 
     public static void main(String[] args) {
         Scanner scan = new Scanner(System.in);
