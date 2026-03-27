@@ -29,7 +29,8 @@ public class Main {
 					+ " 1 - Aula passada \n"
 					+ " 2 - Paranaues de Vetor \n"
 					+ " 3 - Panificadora ''Sabor Caseiro'' da Desgraça \n"
-					+ " 4 - Exercicio de Recursividade \n");
+					+ " 4 - Exercicio de Recursividade \n"
+					+ " 5 - Templates em Java \n");
 			
 			Scanner cin = new Scanner(System.in);
 			
@@ -182,12 +183,42 @@ public class Main {
 						+ "h) Achar maior elemento de um vetor;\n"
 						+ "i) Achar um elemento em um vetor ordenado de comprimento potência de 2.");
 				
-				//Multiplicar inteiros por meio de somas sucessivas [V]
 		
 				int Famoso_A = 3;
 				int Famoso_B = 2;
 				
 				System.out.println(Famoso_A + " Vezes " + Famoso_B + " Igual: " + multiplication(Famoso_A, Famoso_B));
+				
+				menu = 0;
+			}
+			
+			else if (choice == 5) {
+				System.out.println("[=[ Treco de Template ]=]");
+				
+				No<Integer> No_1 = new No<Integer>(10);
+				No<Integer> No_2 = new No<Integer>(30);
+				No<Integer> No_3 = new No<Integer>(50);
+				
+				No_1.Set_Prox(No_2);
+				No_2.Set_Prox(No_3);
+				
+				No<Integer> No_4 = new No<>(40, No_1);
+				
+				System.out.println(No_4.Get_Prox().Get_Prox().Get_Prox().Get_Dado());
+				
+				No<Integer> Novo_No = No_4.Get_Prox().Get_Prox().Get_Prox().Get_Prox();
+				
+				System.out.println(Novo_No != null ? Novo_No.Get_Dado() : "Vazio");
+				
+				// ? É Tipo if-else
+				
+				Lista_Encadeada<Integer> List_1 = new Lista_Encadeada<Integer>();
+				
+				
+				List_1.add(No_1.Get_Dado());
+				List_1.add(No_2.Get_Dado());
+								
+				List_1.Show_All_Elements(No_2.Get_Dado());
 				
 				menu = 0;
 			}
