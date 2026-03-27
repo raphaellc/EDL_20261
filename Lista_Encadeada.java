@@ -27,7 +27,7 @@ public class Lista_Encadeada<T> {
 			Size++;
 		}
 		
-		public void Show_All_Elements(T Dado) {
+		public void Show_All_Elements(T Dado, No<T> Prox) {
 			if (inicio == null) {
 				System.out.println("Empty... mpty... MTY... M T. . . ___");
 				this.inicio = new No<T>(Dado);
@@ -35,10 +35,12 @@ public class Lista_Encadeada<T> {
 			
 			No<T> No_Aux_Show = this.inicio;
 			
+			System.out.println(No_Aux_Show.Get_Dado());
+			
 			while (No_Aux_Show.Get_Prox() != null) {
+				No_Aux_Show = No_Aux_Show.Get_Prox();
 				System.out.println(No_Aux_Show.Get_Dado());
-				No_Aux_Show.Get_Prox();
-			}
+			}		
 			
 		}
 		
