@@ -173,21 +173,41 @@ public class Main {
 				System.out.println("[=[ Treco de Recursividade ]=]");
 				
 				System.out.println(
-						  "a) Multiplicar inteiros por meio de somas sucessivas;\n"
-						+ "b) Verificar se uma palavra é um palíndromo;\n"
-						+ "c) Contar quantas vezes o caractere c ocorre na string s, onde o caractere e a string são fornecidos como parâmetro;\n"
+						  "c) Contar quantas vezes o caractere c ocorre na string s, onde o caractere e a string são fornecidos como parâmetro;\n"
 						+ "d) Calcular a soma dos dígitos de um número inteiro e positivo, onde o número é fornecido como parâmetro. Por exemplo, a chamada da função para o valor 12345 deve retornar 15;\n"
 						+ "e) Retornar um valor inteiro e positivo em ordem reversa, onde o valor é fornecido como parâmetro. Por exemplo, a chamada da função para o valor 123 deve retornar 321. Obs.: Não utilizar string para representar o valor;\n"
 						+ "f) Escrever em ordem os valores inteiros de x a y, onde x e y são fornecidos como parâmetro. Obs.: A lista a ser escrita pode estar em ordem crescente ou decrescente;\n"
 						+ "g) Calcular o máximo divisor comum entre dois números inteiro e positivos, onde os dois números são fornecidos como parâmetro;\n"
 						+ "h) Achar maior elemento de um vetor;\n"
-						+ "i) Achar um elemento em um vetor ordenado de comprimento potência de 2.");
+						+ "i) Achar um elemento em um vetor ordenado de comprimento potência de 2.\n\n");
 				
 		
 				int Famoso_A = 3;
 				int Famoso_B = 2;
 				
-				System.out.println(Famoso_A + " Vezes " + Famoso_B + " Igual: " + multiplication(Famoso_A, Famoso_B));
+		System.out.println("a) Multiplicar inteiros por meio de somas sucessivas;");
+				
+					System.out.println(Famoso_A + " Vezes " + Famoso_B + " Igual: " + multiplication(Famoso_A, Famoso_B));
+				
+				
+		System.out.println("b) Verificar se uma palavra é um palíndromo;");
+				
+					ArrayList<Character> Palindromo_1 = new ArrayList<Character>();
+					Palindromo_1.add('O');	Palindromo_1.add('V');	Palindromo_1.add('O');
+					ArrayList<Character> Palindromo_Reverso_1 = new ArrayList<Character>(Palindromo_1.reversed());
+				
+					ArrayList<Character> Palindromo_2 = new ArrayList<Character>();
+					Palindromo_2.add('G'); Palindromo_2.add('A'); Palindromo_2.add('Y');
+					ArrayList<Character> Palindromo_Reverso_2 = new ArrayList<Character>(Palindromo_2.reversed());
+				
+					System.out.print(Palindromo_1 + " ");		System.out.println(Palindromo_Reverso_1);
+					if (Palindromo_1.equals(Palindromo_Reverso_1)) {	System.out.println("É um Palindromo");	}
+					else { System.out.println("Não é um Palindromo"); }
+				
+					System.out.print(Palindromo_2 + " ");	System.out.println(Palindromo_Reverso_2);
+					if (Palindromo_2.equals(Palindromo_Reverso_2)) {	System.out.println("É um Palindromo"); }
+					else { System.out.println("Não é um Palindromo"); }
+				
 				
 				menu = 0;
 			}
@@ -214,11 +234,12 @@ public class Main {
 				
 				Lista_Encadeada<Integer> List_1 = new Lista_Encadeada<Integer>();
 				
-				
-				List_1.add(No_1.Get_Dado());
+				List_1.add(No_4.Get_Dado());
+				List_1.add(No_3.Get_Dado());
 				List_1.add(No_2.Get_Dado());
-								
-				List_1.Show_All_Elements(No_2.Get_Dado());
+				List_1.add(No_1.Get_Dado());
+
+				List_1.Show_All_Elements(No_4.Get_Dado(), No_4.Get_Prox());
 				
 				menu = 0;
 			}
