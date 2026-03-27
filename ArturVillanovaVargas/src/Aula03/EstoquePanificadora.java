@@ -20,8 +20,8 @@ public class EstoquePanificadora {
         System.out.println(qtdBoloDeCenoura);
         System.out.println(qtdBrigadeiro);
 
-       estoque.sort(Comparator.naturalOrder());
-       estoque.sort(Comparator.reverseOrder());
+        estoque.sort(Comparator.naturalOrder());
+        estoque.sort(Comparator.reverseOrder());
 
         List<String> estoquePrincipal = new ArrayList<>(List.of("Pão", "Bolo"));
         List<String> listaDeVerificacao = new ArrayList<>(estoquePrincipal);
