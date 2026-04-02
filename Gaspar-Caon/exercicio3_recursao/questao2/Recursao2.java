@@ -30,6 +30,7 @@ e executado na versão:
 	OpenJDK 64-Bit Server VM (build 21.0.10+7-Ubuntu-124.04, mixed mode, sharing)
 */
 
+import java.util.List;
 import java.util.Arrays;
 import java.util.ArrayList;
 //import java.util.Comparator;
@@ -88,15 +89,16 @@ public class Recursao2 {
 		float dummy_var = vetor[0];
 		System.out.println(programa.maxElemento(vetor, index, dummy_var));
 		
-		//NÃO ESTÁ CONCLUÍDO ITEM i)
-/*		System.out.println("\ni) Achar um elemento em um vetor ordenado de comprimento potência de 2");
-		ArrayList<Float> vetorOrdenado = new ArrayList<Float>();
-		for (int i=0; i<1024; i++) {
-			vetorOrdenado.add(0.1f*i);
+		System.out.println("\ni) Achar um elemento em um vetor ordenado de comprimento potência de 2");
+		ArrayList<Integer> vetorOrdenado = new ArrayList<Integer>();
+		for (int i=0; i<16; i++) {
+			vetorOrdenado.add(i);
 		}
-		System.out.println("	Seja v o vetor de 1024 (2^10) elementos = [0.1, 0.2, 0.3, ... , 102.2, 102.3)");
-	//	System.out.println(vetorOrdenado.get(1023));
-*/
+		int valor = 5;
+		System.out.println("	Seja v o vetor de 16 (2^4) elementos = [0, 1, 2, ... , 15]");
+		System.out.println("	Valor de vetor[10] = " + vetorOrdenado.get(10));
+		System.out.println("	Posição do valor " + valor + " = " + programa.localizaElemento(vetorOrdenado, valor));
+
 
 	}
 	
@@ -216,21 +218,28 @@ public class Recursao2 {
 		if (v[i] > dummy) dummy = v[i];
 		return maxElemento(v, ++i, dummy);
 	}
-	
-/*	public int localizaElemento(List<Float> v, float valor) {
-		//Pega ponto médio + 1 unidade e verifica.
-		//Não achando o valor, divide vetor em 2 vetores iguais e refaz a busca, como um fractal, até localizar
+
+	public int localizaElemento(List<Integer> vetorOrdenado, int valorProcurado) {
+		//Pega ponto médio e verifica valor.
+		//Não achando o valorProcurado, divide vetor em 2 vetores iguais e refaz a busca, como um fractal
+		//OBS importante: subList(0,4) tem 4 elementos, e não 5, pois não inclui o elemento no índice 4
 		
 		//caso com sorte
-		if (v.get(v.size()/2) == valor) return v.size()/2;
+		if (vetorOrdenado.isEmpty() == true) return -1;
 		
-		//caso geral
-		if (v.get(v.size()/2) > valor) {
-			localizaElemento( v.subList( 0 , v.size()/2 - 1 ), valor);
+		if (valorProcurado == vetorOrdenado.get(vetorOrdenado.size()/2)) {
+			return vetorOrdenado.size()/2;
 		}
 		
-		return -1;	
+		//casos gerais
+		if (valorProcurado > vetorOrdenado.get(vetorOrdenado.size()/2)) {
+			return vetorOrdenado.size()/2 + localizaElemento(vetorOrdenado.subList( vetorOrdenado.size()/2, vetorOrdenado.size()), valorProcurado);
+		}
+		
+		if (valorProcurado < vetorOrdenado.get(vetorOrdenado.size()/2)) {
+			return localizaElemento(vetorOrdenado.subList( 0, vetorOrdenado.size()/2), valorProcurado);
+		}
+		
+		return -1;
 	}
-*/
-
 }
