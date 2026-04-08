@@ -24,6 +24,7 @@ public class ListaPessoas {
             }
         }
         return null;
+    }
 
     public void percorrer(){
         if(lista.isEmpty()){
