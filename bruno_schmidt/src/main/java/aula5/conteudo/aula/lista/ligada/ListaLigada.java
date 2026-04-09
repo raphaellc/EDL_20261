@@ -111,4 +111,8 @@ public class ListaLigada<T> {
 
         System.out.println(atual.getDado());
     }
+
+    public int tamanho() {
+        return this.tamanho;
+    }
 }
