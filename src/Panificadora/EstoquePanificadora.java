@@ -5,7 +5,7 @@ import java.util.Comparator;
 
 public class EstoquePanificadora {
     public static void main(String[] args) {
-        // --- 1. Abertura da Padaria ---
+
         ArrayList<String> produtos = new ArrayList<>();
         produtos.add("Pão Frances");
         produtos.add("Pão de Queijo");
@@ -18,8 +18,7 @@ public class EstoquePanificadora {
         System.out.println("Produtos: " + produtos);
         pausar(2000);
 
-        // --- 2. Venda e Contagem (Stream API) ---
-        System.out.println("\n[CLIENTE] - 'Me vê o último sonho, por favor?'");
+          System.out.println("\n[CLIENTE] - 'Me vê o último sonho, por favor?'");
         pausar(1500);
         produtos.remove("Sonho");
         System.out.println("[SISTEMA] - Sonho removido do estoque.");
@@ -34,14 +33,12 @@ public class EstoquePanificadora {
         System.out.println("-> Brigadeiros: " + qtdBrigadeiro);
         pausar(1500);
 
-        // --- 3. Organização (Sorting) ---
         System.out.println("\n[SISTEMA] - Organizando a vitrine por ordem alfabética...");
         pausar(2000);
         produtos.sort(Comparator.naturalOrder());
         System.out.println("Vitrine organizada: " + produtos);
         pausar(1500);
 
-        // --- 4. Cópia Segura (Memória) ---
         System.out.println("\n[GERENTE] - Criando lista de verificação para o fornecedor...");
         pausar(2000);
         ArrayList<String> estoquePrincipal = new ArrayList<>();
@@ -49,14 +46,13 @@ public class EstoquePanificadora {
         estoquePrincipal.add("Bolo");
 
         ArrayList<String> listaDeVerificacao = new ArrayList<>(estoquePrincipal);
-        listaDeVerificacao.add("Café"); // O gerente anotou um lembrete apenas na cópia
+        listaDeVerificacao.add("Café");
 
         System.out.println("Estoque Original: " + estoquePrincipal);
         System.out.println("Anotação (Cópia): " + listaDeVerificacao);
         System.out.println("[SISTEMA] - Verificação concluída. Listas independentes.");
         pausar(2000);
 
-        // --- 5. Sistema de Pedidos (FIFO + Prioridade) ---
         System.out.println("\n=== INICIANDO SISTEMA DE PEDIDOS (Fila) ===");
         ArrayList<String> pedidosPendentes = new ArrayList<>();
 
@@ -90,7 +86,6 @@ public class EstoquePanificadora {
         System.out.println("=== FIM DO EXPEDIENTE ===");
     }
 
-    // Método auxiliar para não precisar repetir o try-catch toda hora
     public static void pausar(int milissegundos) {
         try {
             Thread.sleep(milissegundos);
