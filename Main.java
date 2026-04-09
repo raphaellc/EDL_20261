@@ -173,8 +173,7 @@ public class Main {
 				System.out.println("[=[ Treco de Recursividade ]=]");
 				
 				System.out.println(
-						  "c) Contar quantas vezes o caractere c ocorre na string s, onde o caractere e a string são fornecidos como parâmetro;\n"
-						+ "d) Calcular a soma dos dígitos de um número inteiro e positivo, onde o número é fornecido como parâmetro. Por exemplo, a chamada da função para o valor 12345 deve retornar 15;\n"
+						  "d) Calcular a soma dos dígitos de um número inteiro e positivo, onde o número é fornecido como parâmetro. Por exemplo, a chamada da função para o valor 12345 deve retornar 15;\n"
 						+ "e) Retornar um valor inteiro e positivo em ordem reversa, onde o valor é fornecido como parâmetro. Por exemplo, a chamada da função para o valor 123 deve retornar 321. Obs.: Não utilizar string para representar o valor;\n"
 						+ "f) Escrever em ordem os valores inteiros de x a y, onde x e y são fornecidos como parâmetro. Obs.: A lista a ser escrita pode estar em ordem crescente ou decrescente;\n"
 						+ "g) Calcular o máximo divisor comum entre dois números inteiro e positivos, onde os dois números são fornecidos como parâmetro;\n"
@@ -185,12 +184,12 @@ public class Main {
 				int Famoso_A = 3;
 				int Famoso_B = 2;
 				
-		System.out.println("a) Multiplicar inteiros por meio de somas sucessivas;");
+		System.out.println("a) Multiplicar inteiros por meio de somas sucessivas;\n");
 				
 					System.out.println(Famoso_A + " Vezes " + Famoso_B + " Igual: " + multiplication(Famoso_A, Famoso_B));
 				
 				
-		System.out.println("b) Verificar se uma palavra é um palíndromo;");
+		System.out.println("b) Verificar se uma palavra é um palíndromo;\n");
 				
 					ArrayList<Character> Palindromo_1 = new ArrayList<Character>();
 					Palindromo_1.add('O');	Palindromo_1.add('V');	Palindromo_1.add('O');
@@ -208,7 +207,18 @@ public class Main {
 					if (Palindromo_2.equals(Palindromo_Reverso_2)) {	System.out.println("É um Palindromo"); }
 					else { System.out.println("Não é um Palindromo"); }
 				
-				
+		
+		System.out.println("c) Contar quantas vezes o caractere c ocorre na string s, onde o caractere e a string são fornecidos como parâmetro;\n");
+					
+					char c;					String s;
+					c = 'o';				s = "boob";
+								
+					for (int i = 0; i < s.length(); i++) {
+						
+						if (s.charAt(i) == c) { System.out.println(c + " Aparece " + i + " Vezes"); }
+						
+					}
+					
 				menu = 0;
 			}
 			
