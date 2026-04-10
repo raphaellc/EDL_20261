@@ -1,14 +1,14 @@
 package aula5.conteudo.aula.lista.ligada;
 
-public class No<T> {
+public class NoSimples<T> {
     private T dado;
-    private No<T> proximo;
+    private NoSimples<T> proximo;
 
-    No(T dado) {
+    protected NoSimples(T dado) {
         this.dado = dado;
     }
 
-    No(T dado, No<T> proximo) {
+    NoSimples(T dado, NoSimples<T> proximo) {
         this.dado = dado;
         this.proximo = proximo;
     }
@@ -17,11 +17,11 @@ public class No<T> {
         return dado;
     }
 
-    public No<T> getProximo() {
+    public NoSimples<T> getProximo() {
         return proximo;
     }
 
-    void setProximo(No<T> proximo) {
+    void setProximo(NoSimples<T> proximo) {
         this.proximo = proximo;
     }
 

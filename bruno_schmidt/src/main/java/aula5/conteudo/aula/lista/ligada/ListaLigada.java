@@ -1,14 +1,16 @@
 package aula5.conteudo.aula.lista.ligada;
 
-public class ListaLigada<T> {
-    private No<T> inicio;
+import aula6.exercicio.aula.ListaEncadeada;
+
+public class ListaLigada<T> implements ListaEncadeada<NoSimples<T>, T> {
+    private NoSimples<T> inicio;
     private int tamanho = 0;
 
-    public No<T> buscar(int pos) {
+    public NoSimples<T> buscar(int pos) {
         return buscar(this.inicio, pos);
     }
 
-    private No<T> buscar(No<T> noAtual, int pos) {
+    private NoSimples<T> buscar(NoSimples<T> noAtual, int pos) {
         if(pos == 0) {
             return noAtual;
         }
@@ -20,7 +22,7 @@ public class ListaLigada<T> {
         var noAtual = this.inicio;
 
         if(noAtual == null) {
-            this.inicio = new No<>(dado);
+            this.inicio = new NoSimples<>(dado);
             tamanho++;
             return;
         }
@@ -29,7 +31,7 @@ public class ListaLigada<T> {
             noAtual = noAtual.getProximo();
         }
 
-        noAtual.setProximo(new No<>(dado));
+        noAtual.setProximo(new NoSimples<>(dado));
         tamanho++;
     }
 
@@ -43,7 +45,7 @@ public class ListaLigada<T> {
         tamanho--;
     }
 
-    private No<T> remover(No<T> noAnterior, No<T> noAtual, int pos) {
+    private NoSimples<T> remover(NoSimples<T> noAnterior, NoSimples<T> noAtual, int pos) {
         if(pos == -1) {
             var removido = this.inicio;
             this.inicio = noAtual.getProximo();
@@ -71,10 +73,10 @@ public class ListaLigada<T> {
         atualizar(null, this.inicio, pos == 0 ? -1 : pos, novoDado);
     }
 
-    private void atualizar(No<T> noAnterior, No<T> noAtual, int pos, T novoDado) {
+    private void atualizar(NoSimples<T> noAnterior, NoSimples<T> noAtual, int pos, T novoDado) {
         if(pos == -1) {
-            No<T> noAntigo = this.inicio;
-            this.inicio = new No<>(novoDado);
+            NoSimples<T> noAntigo = this.inicio;
+            this.inicio = new NoSimples<>(novoDado);
 
             if(noAntigo.hasProximo()) {
                 this.inicio.setProximo(noAntigo.getProximo());
@@ -82,7 +84,7 @@ public class ListaLigada<T> {
         }
 
         if(pos == 0) {
-            var novoNo = new No<>(novoDado);
+            var novoNo = new NoSimples<>(novoDado);
 
             noAnterior.setProximo(novoNo);
 
