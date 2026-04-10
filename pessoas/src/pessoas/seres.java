@@ -1,13 +1,37 @@
 package pessoas;
 
-public class seres {
+public class seres<T> {
 	
-	private String nome;
-	private int idade;
+	private T nome;
+	private T idade;
+	private seres<T> prox;
 	
-	public seres(String nome, int idade) {
+	public T getNome() {
+		return this.nome;
+		
+	}
+	
+	public T getIdade() {
+		return this.idade;
+		
+	}
+	
+	public seres<T> getProx() {
+		return this.prox;
+	}
+	
+	public void setNome(T nome) {
 		this.nome = nome;
+		
+	}
+	
+	public void setIdade(T idade) {
 		this.idade = idade;
 	}
-
+	
+	public void setProx (seres<T> prox) {
+		this.prox = prox;
+		
+	}
+	
 }
