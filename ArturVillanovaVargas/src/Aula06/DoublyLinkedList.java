@@ -1,11 +1,24 @@
-package Aula05;
+package Aula06;
 
-public class LinkedList<T> {
+public class DoublyLinkedList<T> {
     private Node<T> head;
     private int size;
 
-    public LinkedList() {
+    public DoublyLinkedList() {
         this.size = 0;
+    }
+
+    public void addFirst(T data) {
+        if(head == null) {
+            head = new Node<>(data);
+        } else {
+            Node<T> temp = new Node<>(data);
+            temp.setNext(head);
+            head.setPrev(temp);
+            head = temp;
+        }
+
+        size++;
     }
 
     private Node<T> findLast(Node<T> curr) {
@@ -19,28 +32,18 @@ public class LinkedList<T> {
         if(head == null) {
             head = new Node<>(data);
         } else {
-            Node<T> lastNode = findLast(head);
-            lastNode.setNext(new Node<>(data));
-        }
-
-        size++;
-    }
-
-    public void addFirst(T data) {
-        if(head == null) {
-            head = new Node<>(data);
-        } else {
-            var temp = new Node<>(data);
-            temp.setNext(head);
-            head = temp;
+            Node<T> last = findLast(head);
+            last.setNext(new Node<>(data));
+            last.getNext().setPrev(last);
         }
 
         size++;
     }
 
     public void removeFirst() {
-        if(head != null && head.getNext() != null) {
+        if(head != null) {
             head = head.getNext();
+            head.setPrev(null);
             size--;
         }
     }
@@ -59,31 +62,6 @@ public class LinkedList<T> {
 
             size--;
         }
-    }
-
-    private Node<T> removeByIndex(Node<T> curr, int index, int currIndex) {
-        if(index == 1)
-            removeFirst();
-
-        if(index == this.size)
-            removeLast();
-
-        if((currIndex + 1) == index) {;
-            curr.setNext(curr.getNext().getNext());
-            size--;
-            return curr;
-        }
-
-        return removeByIndex(curr.getNext(), index, currIndex + 1);
-    }
-
-    /**
-     * Remove o Nó do indice passado por parametro.
-     * @param index Index do valor que deve ser deletado, começando de 1 até this.size
-     * @return Void
-     */
-    public void removeByIndex(int index) {
-        removeByIndex(head, index, 1);
     }
 
     private Node<T> print(Node<T> curr) {
