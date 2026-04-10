@@ -1,74 +1,141 @@
 package Lista;
 
 import No.No;
+import java.util.Optional;
 
-public class ListaEncadeada<T> {
+public class ListaEncadeada<T> implements ILista<T> {
     private No<T> inicio;
     private int tamanho;
 
-    public ListaEncadeada(){
+    public ListaEncadeada() {
         this.inicio = null;
         this.tamanho = 0;
     }
 
-    public void adicionar(T dado){
-        if (this.inicio == null){
-            this.inicio = new No<T>(dado);
+    @Override
+    public void adicionar(T dado) {
+        if (this.inicio == null) {
+            this.inicio = new No<>(dado);
             tamanho++;
             return;
         }
-        //caso a lista não esteja vazia 
-        //Encontrar o elemento cujo próximo seja igual a null
-        //partindo do no inicial
         No<T> noAux = this.inicio;
-        while (noAux.getProximo() != null){
+        while (noAux.getProximo() != null) {
             noAux = noAux.getProximo();
         }
-        noAux.setProximo(new No<T>(dado));
+        noAux.setProximo(new No<>(dado));
         tamanho++;
-        return;
-
     }
-    public void adicionar(int posicao, T dado){}
-    public void contemNaLista(T dado){}
 
-    public boolean remover(int posicao){
-        if(this.inicio == null) return false;
-        if (posicao <= this.tamanho){
-            int pos_atual = 0;
-            No<T> no_aux = this.inicio;
-            No<T> no_ant = null;
-            if (posicao == 0){
-                this.inicio = no_aux.getProximo();
-                tamanho--;
-                return true;
-            }else{
-                while(pos_atual < posicao-1){
-                    no_ant = no_aux;
-                    no_aux = no_aux.getProximo();
-                    pos_atual++;
-                }
-                no_ant.setProximo(no_aux.getProximo());
+    @Override
+    public boolean adicionar(int posicao, T dado) {
+        if (posicao < 0 || posicao > tamanho) return false;
+
+        if (posicao == 0) {
+            this.inicio = new No<>(dado, this.inicio);
+            tamanho++;
+            return true;
+        }
+
+        No<T> noAux = this.inicio;
+        for (int i = 0; i < posicao - 1; i++) {
+            noAux = noAux.getProximo();
+        }
+        noAux.setProximo(new No<>(dado, noAux.getProximo()));
+        tamanho++;
+        return true;
+    }
+
+    @Override
+    public Optional<T> obter(int posicao) {
+        if (posicao < 0 || posicao >= tamanho) return Optional.empty();
+
+        No<T> noAux = this.inicio;
+        for (int i = 0; i < posicao; i++) {
+            noAux = noAux.getProximo();
+        }
+        return Optional.of(noAux.getDado());
+    }
+
+    @Override
+    public boolean remover(int posicao) {
+        if (this.inicio == null || posicao < 0 || posicao >= tamanho) return false;
+
+        if (posicao == 0) {
+            this.inicio = this.inicio.getProximo();
+            tamanho--;
+            return true;
+        }
+
+        No<T> noAux = this.inicio;
+        for (int i = 0; i < posicao - 1; i++) {
+            noAux = noAux.getProximo();
+        }
+        noAux.setProximo(noAux.getProximo().getProximo());
+        tamanho--;
+        return true;
+    }
+
+    @Override
+    public boolean remover(T dado) {
+        if (this.inicio == null) return false;
+
+        if (this.inicio.getDado().equals(dado)) {
+            this.inicio = this.inicio.getProximo();
+            tamanho--;
+            return true;
+        }
+
+        No<T> noAux = this.inicio;
+        while (noAux.getProximo() != null) {
+            if (noAux.getProximo().getDado().equals(dado)) {
+                noAux.setProximo(noAux.getProximo().getProximo());
                 tamanho--;
                 return true;
             }
-        }
-        return false; 
-
-    }
-
-    public void mostrarTodosElementos(){
-        if (inicio == null){
-            IO.println("Lista vazia!");
-            return;
-        }
-        No<T> noAux = this.inicio;
-        while(noAux != null){
-            IO.println(noAux.getDado());
             noAux = noAux.getProximo();
         }
-        IO.println("Fim da Lista");
-
+        return false;
     }
 
+    @Override
+    public boolean contemNaLista(T dado) {
+        No<T> noAux = this.inicio;
+        while (noAux != null) {
+            if (noAux.getDado().equals(dado)) return true;
+            noAux = noAux.getProximo();
+        }
+        return false;
+    }
+
+    @Override
+    public int getTamanho() {
+        return tamanho;
+    }
+
+    @Override
+    public boolean estaVazia() {
+        return this.inicio == null;
+    }
+
+    @Override
+    public void limpar() {
+        this.inicio = null;
+        this.tamanho = 0;
+    }
+
+    @Override
+    public String toString() {
+        if (estaVazia()) return "[]";
+
+        StringBuilder sb = new StringBuilder("[");
+        No<T> noAux = this.inicio;
+        while (noAux != null) {
+            sb.append(noAux.getDado());
+            if (noAux.getProximo() != null) sb.append(" -> ");
+            noAux = noAux.getProximo();
+        }
+        sb.append("]");
+        return sb.toString();
+    }
 }
