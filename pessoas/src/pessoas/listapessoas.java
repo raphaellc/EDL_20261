@@ -5,19 +5,51 @@ import pessoas.seres;
 
 public class listapessoas {
 	
-		ArrayList<String> lista = new ArrayList<>();
-		LinkedList<String> listaLigada = new LinkedList<>();
-		
-		
-	public void inserir(pessoas.seres) {
-		lista.add(seres(this.nome, this.idade));
+	private seres<T> inicio;
+	private int tamanho;
+	
+	public void listaencadeada() {
+		this.inicio = null;
+		this.tamanho = 0;
 		
 	}
 	
-	public static void main(String[] args) {
+	public void adicionar(T pessoa) {
+		if (this.inicio == null) {
+			this.inicio = new seres<T>();
+			tamanho++;
+			return;
+			
+		}
 		
-		lista.inserir(seres("arthur", 35));
+		seres<T> noAux = this.inicio;
+		while (noAux.getProx() != null) {
+			noAux = noAux.getProx();
+		}
+			noAux.setProx(new seres<T>());
+			tamanho++;
+			return;
 		
 	}
+	
+	public void mostrar() {
+		if (inicio == null) {
+			System.out.println("Lista vazia");
+			return;
+			}
+		seres<T> noAux = this.inicio;
+		while(noAux != null) {
+			System.out.println(noAux.getNome());
+			System.out.println(noAux.getIdade());
+			noAux = noAux.getProx();
+			}
+		System.out.println("Fim da lista");
+		
+	}
+}	
+	
+	public static void main(String[] args) {
+		
+		
 	
 }
