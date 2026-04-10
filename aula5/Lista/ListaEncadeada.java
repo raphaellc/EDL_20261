@@ -29,6 +29,33 @@ public class ListaEncadeada<T> {
         return;
 
     }
+    public void adicionar(int posicao, T dado){}
+    public void contemNaLista(T dado){}
+
+    public boolean remover(int posicao){
+        if(this.inicio == null) return false;
+        if (posicao <= this.tamanho){
+            int pos_atual = 0;
+            No<T> no_aux = this.inicio;
+            No<T> no_ant = null;
+            if (posicao == 0){
+                this.inicio = no_aux.getProximo();
+                tamanho--;
+                return true;
+            }else{
+                while(pos_atual < posicao-1){
+                    no_ant = no_aux;
+                    no_aux = no_aux.getProximo();
+                    pos_atual++;
+                }
+                no_ant.setProximo(no_aux.getProximo());
+                tamanho--;
+                return true;
+            }
+        }
+        return false; 
+
+    }
 
     public void mostrarTodosElementos(){
         if (inicio == null){
