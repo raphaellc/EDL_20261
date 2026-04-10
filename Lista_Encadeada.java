@@ -1,47 +1,280 @@
 package main;
+import java.util.Scanner;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.LinkedList;
 
-public class Lista_Encadeada<T> {
-
-	private No<T> inicio;
-	private int Size;
+public class Main {
 	
-		public Lista_Encadeada() {
-			this.inicio = null;
-			this.Size = 0;
-		}
-	
-		public void add(T Dado) {
-			
-			if (this.inicio == null) {
-				this.inicio = new No<T>(Dado);
-				return;
-			}
-			
-			No<T> No_Aux_Add = this.inicio;
-			
-			while(No_Aux_Add.Get_Prox() != null) {
-				No_Aux_Add = No_Aux_Add.Get_Prox();
-				}
-			
-			No_Aux_Add.Set_Prox(new No<T>(Dado));
-			Size++;
+	public static long multiplication(long a, long b) {
+		
+		if (b == 0) {
+			return 0L;
 		}
 		
-		public void Show_All_Elements(T Dado, No<T> Prox) {
-			if (inicio == null) {
-				System.out.println("Empty... mpty... MTY... M T. . . ___");
-				this.inicio = new No<T>(Dado);
+		return (a + multiplication(a, b -1));
+			
+	
+		
+		}
+	
+	public static void main(String[] args) {
+	    
+		int menu = 1;
+		int choice;
+		
+		while (menu == 1) {
+			
+			System.out.println("Escolha o exercicio:\n"
+					+ " 1 - Aula passada \n"
+					+ " 2 - Paranaues de Vetor \n"
+					+ " 3 - Panificadora ''Sabor Caseiro'' da Desgraça \n"
+					+ " 4 - Exercicio de Recursividade \n"
+					+ " 5 - Templates em Java \n");
+			
+			Scanner cin = new Scanner(System.in);
+			
+			choice = cin.nextInt();
+			
+			cin.close();
+			
+			if (choice == 1) {
+				
+			    Classe_Amiga amiga = new Classe_Amiga("Jorge");
+			    
+			    System.out.println(amiga.getNome());
+			    
+			    ArrayList<String> lista = new ArrayList<String>();
+			    LinkedList<String> lista_ligada = new LinkedList<String>();
+			    lista_ligada.addFirst("Churrasco");
+			    lista_ligada.addLast("Arroz");
+			    lista_ligada.add("Carne");
+			    lista_ligada.add("Salsichão");
+			    lista_ligada.add("Pão de Alho");
+			    
+			    
+			    
+			    lista.add("Java");
+			    lista.add("Python");
+			    lista.add("C++");
+			    lista.add("SQL");
+			    lista.add("Cobol");
+			    lista.add(1,"C#");
+			    
+			    System.out.println("Lista Normal:" + lista);
+			    System.out.println("Lista Ligada: " + lista_ligada);
+			    System.out.println("Lista Ligada Diferenciada: " + lista_ligada.get(2));
+			
+			    menu = 0;
 			}
 			
-			No<T> No_Aux_Show = this.inicio;
+			else if (choice == 2) {
+				
+				System.out.println("[=[ Treco de Vetor ]=]");
+				
+				ArrayList<Integer> vetor = new ArrayList<Integer>();
+				vetor.add(1);
+				vetor.add(2);
+				vetor.add(3);
+				vetor.add(4);
+				vetor.add(5);
+				vetor.add(6);
+				vetor.add(7);
+				vetor.add(8);
+				vetor.add(9);
+				vetor.add(10);
+				
+				System.out.println("Vetor de 10 numeros: " + vetor);
+				
+				System.out.println("Vetor de 10 numeros ao contrario: " + vetor.reversed());
+				
+				System.out.println("Maior e Menor valor do vetor: " + vetor.get(0) + " , " + vetor.get(9));
+						
+				int sum = 0;
+				for (Integer total : vetor) { sum += total;	}
+				
+				System.out.println("Soma de Todos os valores do vetor: " + sum);
+				
+				vetor.remove(0);
+				vetor.addLast(1);
+				System.out.println("Vetor Esquerdado: " + vetor);
+				
+				vetor.remove(0);
+				vetor.addLast(2);
+				System.out.println("Vetor mais Esquerdado: " + vetor);
+				
+				menu = 0;
+			}
 			
-			System.out.println(No_Aux_Show.Get_Dado());
+			else if (choice == 3) {
+				System.out.println("[=[ Treco de Estoque ]=]");
+				
+				ArrayList<String> Stock = new ArrayList<String>();
+				ArrayList<String> Daily_Stock = new ArrayList<String>();
+				ArrayList<String> Pending_Stock = new ArrayList<String>();
+				
+				Estoque_Panificadora Estoque = new Estoque_Panificadora(Stock);
+				Estoque_Panificadora Estoque_do_Dia = new Estoque_Panificadora(Daily_Stock);
+				Estoque_Panificadora Lista_Pendente = new Estoque_Panificadora(Pending_Stock);
+				
+				
+				System.out.println("Estoque Normal: " + Stock);
+				
+				Stock.add("Crossaint");
+				Stock.addFirst("Pão Doce");
+				
+				System.out.println("Estoque pós novas coisas: " + Stock);
+				
+				Stock.remove(4);
+				
+				System.out.println("Estoque pós um retardado comer a porra do Sonho: " + Stock);
+				
+				System.out.println("Numero de bolos de cenoura: " +	Stock.stream().filter(item->item.equals("Bolo de Cenoura")).count() );
+				System.out.println("Numero de razões para esse código funcionar: " + Stock.stream().filter(item->item.equals("Brigadeiro")).count() );
+				
+				
+				System.out.println("Estoque em ordem reversa: " + Stock.reversed());
+				Daily_Stock.sort(Comparator.reverseOrder());
+				System.out.println("Estoque do dia em ordem alfabetica reversa: " + Daily_Stock);
+				
+				
+				Daily_Stock.sort(Comparator.naturalOrder());
+				System.out.println("Estoque do dia em ordem alfabetica: " + Daily_Stock);
+
+				
+				ArrayList<String> Main_List = new ArrayList<String>();
+				Main_List.add("Pao");
+				Main_List.add("Bolo");
+				ArrayList<String> Verification_List = new ArrayList<String>(Main_List);
+				Verification_List.add("O cu do professor");
+				
+				System.out.println("Lista Main: " + Main_List);
+				System.out.println("Lista de Verificação da Lista Main que funciona como um ponteiro para a região da memoria da Lista Main, assim fazendo um ALIASING: " + Verification_List);
+				
+				
+				Pending_Stock.addLast("Café com Leite");
+				Pending_Stock.addLast("Bolo de Chocolate");
+				Pending_Stock.addLast("Pão na Chapa");
+				
+				System.out.println("Lista Pendente: " + Pending_Stock);
+				System.out.println("Tamanho da Lista Pendente: " + Pending_Stock.size());
+				
+				Pending_Stock.removeFirst();
+				System.out.println("Lista Pendente sem o primeiro item: " + Pending_Stock);
+				
+				Pending_Stock.addFirst("Suco de Laranja");
+				System.out.println("Lista Pendente nova / Fila de pedidos: " + Pending_Stock);
+				
+				menu = 0;
+			}
 			
-			while (No_Aux_Show.Get_Prox() != null) {
-				No_Aux_Show = No_Aux_Show.Get_Prox();
-				System.out.println(No_Aux_Show.Get_Dado());
-			}		
+			
+			else if (choice == 4) {
+				System.out.println("[=[ Treco de Recursividade ]=]");
+				
+				System.out.println(
+						  "e) Retornar um valor inteiro e positivo em ordem reversa, onde o valor é fornecido como parâmetro. Por exemplo, a chamada da função para o valor 123 deve retornar 321. Obs.: Não utilizar string para representar o valor;\n"
+						+ "f) Escrever em ordem os valores inteiros de x a y, onde x e y são fornecidos como parâmetro. Obs.: A lista a ser escrita pode estar em ordem crescente ou decrescente;\n"
+						+ "g) Calcular o máximo divisor comum entre dois números inteiro e positivos, onde os dois números são fornecidos como parâmetro;\n"
+						+ "h) Achar maior elemento de um vetor;\n"
+						+ "i) Achar um elemento em um vetor ordenado de comprimento potência de 2.");
+				
+		
+				int Famoso_A = 3;
+				int Famoso_B = 2;
+			System.out.println();		
+		System.out.println("a) Multiplicar inteiros por meio de somas sucessivas;\n");
+				
+					System.out.println(Famoso_A + " Vezes " + Famoso_B + " Igual: " + multiplication(Famoso_A, Famoso_B));
+				
+			System.out.println();	
+		System.out.println("b) Verificar se uma palavra é um palíndromo;\n");
+		
+		
+					ArrayList<Character> Palindromo_1 = new ArrayList<Character>();
+					Palindromo_1.add('O');	Palindromo_1.add('V');	Palindromo_1.add('O');
+					ArrayList<Character> Palindromo_Reverso_1 = new ArrayList<Character>(Palindromo_1.reversed());
+				
+					ArrayList<Character> Palindromo_2 = new ArrayList<Character>();
+					Palindromo_2.add('G'); Palindromo_2.add('A'); Palindromo_2.add('Y');
+					ArrayList<Character> Palindromo_Reverso_2 = new ArrayList<Character>(Palindromo_2.reversed());
+				
+					System.out.print(Palindromo_1 + " ");		System.out.println(Palindromo_Reverso_1);
+					if (Palindromo_1.equals(Palindromo_Reverso_1)) {	System.out.println("É um Palindromo");	}
+					else { System.out.println("Não é um Palindromo"); }
+				
+					System.out.print(Palindromo_2 + " ");	System.out.println(Palindromo_Reverso_2);
+					if (Palindromo_2.equals(Palindromo_Reverso_2)) {	System.out.println("É um Palindromo"); }
+					else { System.out.println("Não é um Palindromo"); }
+				
+			System.out.println();	
+		System.out.println("c) Contar quantas vezes o caractere c ocorre na string s, onde o caractere e a string são fornecidos como parâmetro;\n");
+					
+					char c;					String s;
+					c = 'o';				s = "boob";
+								
+					for (int i = 0; i < s.length(); i++) {
+						
+						if (s.charAt(i) == c) { System.out.println(c + " Aparece " + i + " Vezes"); }
+						
+					}
+					
+			System.out.println();
+		System.out.println("d) Calcular a soma dos dígitos de um número inteiro e positivo, onde o número é fornecido como parâmetro. Por exemplo, a chamada da função para o valor 12345 deve retornar 15;\n");
+		
+		int numbah;
+		
+		numbah = 12345;
+		
+		String temp = Integer.toString(numbah);
+		int[] digits = new int[temp.length()];
+		
+		for (int i = temp.length() - 1; i >= 0; i--) {
+			digits[i] = numbah % 10;
+			numbah /= 10;
+		}
+		
+		int digits_result = digits[0] + digits[1] + digits[2] + digits[3] + digits[4];
+		
+		System.out.println(digits_result);
+		
+					
+				menu = 0;
+			}
+			
+			else if (choice == 5) {
+				System.out.println("[=[ Treco de Template ]=]");
+				
+				No<Integer> No_1 = new No<Integer>(10);
+				No<Integer> No_2 = new No<Integer>(30);
+				No<Integer> No_3 = new No<Integer>(50);
+				
+				No_1.Set_Prox(No_2);
+				No_2.Set_Prox(No_3);
+				
+				No<Integer> No_4 = new No<>(40, No_1);
+				
+				System.out.println(No_4.Get_Prox().Get_Prox().Get_Prox().Get_Dado());
+				
+				No<Integer> Novo_No = No_4.Get_Prox().Get_Prox().Get_Prox().Get_Prox();
+				
+				System.out.println(Novo_No != null ? Novo_No.Get_Dado() : "Vazio");
+				
+				// ? É Tipo if-else
+				
+				Lista_Encadeada<Integer> List_1 = new Lista_Encadeada<Integer>();
+				
+				List_1.add(No_4.Get_Dado());
+				List_1.add(No_3.Get_Dado());
+				List_1.add(No_2.Get_Dado());
+				List_1.add(No_1.Get_Dado());
+
+				List_1.Show_All_Elements(No_4.Get_Dado(), No_4.Get_Prox());
+				
+				menu = 0;
+			}
 			
 		}
 		
+	}
 }
