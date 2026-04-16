@@ -5,53 +5,59 @@ public class ListaDupla<T> {
     private int size;
 
     public ListaDupla(){
+        this.inicio = null;
         this.size = 0;
     }
 
     public void addFirst(T dado){
-        if(inicio == null){
-            inicio = new No<T>(dado);
-        } else {
-            No<T> novoNo = new No<T>(dado);
-            novoNo.setProximo(inicio);
-            inicio.setAnterior(novoNo);
-            inicio = novoNo;
+        No<T> novo = new No<>(dado);
+
+        if(inicio != null){
+            novo.setProximo(inicio);
+            inicio.setAnterior(novo);
         }
+
+        inicio = novo;
         size++;
     }
 
     public No<T> findLast(No<T> atual){
-        if(atual.getProximo() != null){
-            return findLast(atual.getProximo());
+        if(atual.getProximo() == null){
+            return atual;
         }
-        return atual;
+        return findLast(atual.getProximo());
     }
 
     public void addLast(T dado){
+        No<T> novo = new No<>(dado);
+
         if(inicio == null){
-            inicio = new No<T>(dado);
+            inicio = novo;
         } else {
             No<T> ultimo = findLast(inicio);
-            ultimo.setProximo(new No<T>(dado));
-            ultimo.getProximo().setAnterior(ultimo);
+            ultimo.setProximo(novo);
+            novo.setAnterior(ultimo);
         }
+
         size++;
     }
 
     public void removeFirst(){
-        if(inicio != null){
-            if(inicio.getProximo() == null){
-                inicio = null;
-         } else {
+        if(inicio == null) return;
+
+        if(inicio.getProximo() == null){
+            inicio = null;
+        } else {
             inicio = inicio.getProximo();
             inicio.setAnterior(null);
         }
+
         size--;
-        }
     }
 
     public void removeLast(){
-    if(inicio != null){
+        if(inicio == null) return;
+
         if(inicio.getProximo() == null){
             inicio = null;
         } else {
@@ -59,12 +65,39 @@ public class ListaDupla<T> {
             No<T> penultimo = ultimo.getAnterior();
             penultimo.setProximo(null);
         }
+
         size--;
-        }
     }
-    
+
+    public boolean buscar(T valor){
+        No<T> atual = inicio;
+
+        while(atual != null){
+            if(atual.getDado().equals(valor)){
+                return true;
+            }
+            atual = atual.getProximo();
+        }
+
+        return false;
+    }
+
+   @Override
+    public String toString(){
+        String s = "";
+        No<T> atual = inicio;
+
+        while(atual != null){
+            s += atual.getDado() + " -> ";
+            atual = atual.getProximo();
+        }
+
+        return s + "null";
+    }
+
     public boolean isEmpty(){
         return size == 0;
     }
 
+    
 }

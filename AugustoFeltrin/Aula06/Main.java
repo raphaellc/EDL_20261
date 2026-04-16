@@ -20,6 +20,9 @@ public class Main {
         System.out.println("Lista - addLast:");
         System.out.println(lista);
 
+        System.out.println("Buscar 20: " + lista.buscar(20));
+        System.out.println("Buscar 99: " + lista.buscar(99));
+
         lista.removeFirst();
         System.out.println("Lista - removeFirst:");
         System.out.println(lista);
@@ -27,7 +30,5 @@ public class Main {
         lista.removeLast();
         System.out.println("Lista - removeLast:");
         System.out.println(lista);
-
-        System.out.println("Tamanho da lista: " + lista.size());
     }
 }
