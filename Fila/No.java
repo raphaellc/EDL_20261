@@ -1,4 +1,4 @@
-class No<T>{
+public class No<T>{
     private T dado;
     private No<T> proximo;
     private No<T> anterior;
@@ -6,6 +6,7 @@ class No<T>{
     public No(T dado) {
         this.dado = dado;
         this.proximo = null;
+        this.anterior = null;
     }
 
     public T getDado() {
@@ -23,7 +24,7 @@ class No<T>{
     public void setProximo(No<T> proximo) {
         this.proximo = proximo;
     }
-    
+
     public No<T> getAnterior() {
         return anterior;
     }
