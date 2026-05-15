@@ -42,11 +42,16 @@ void main() {
 
     System.out.println("Tamanho da Pilha: " + Pilha_de_Manga.getTamanho());
     System.out.println("Manga no topo da Pilha: " + Pilha_de_Manga.getTopo());
+    System.out.println("Coisas na Pilha:");
+    Pilha_de_Manga.listaPilha();
 
     Pilha_de_Manga.desempilhar();
 
     System.out.println("Novo Tamanho da Pilha: " + Pilha_de_Manga.getTamanho());
     System.out.println("Novo Manga no topo da Pilha: " + Pilha_de_Manga.getTopo());
+    System.out.println("Novas Coisas na Pilha:");
+    Pilha_de_Manga.listaPilha();
+
 }
 
 public class No<T> {
@@ -211,4 +216,20 @@ public class Pilha<T> {
     public int getTamanho() { return tamanho; }
 
     public boolean empty() { return tamanho == 0; }
+
+    public void listaPilha() {
+
+        if (empty()) {
+            return;
+        }
+
+        No<T> no_lista = this.Topo;
+
+        while(no_lista.getProximo() != null) {
+            System.out.println(" - " + no_lista.getDado());
+            no_lista = no_lista.getProximo();
+        }
+        System.out.println(" - " + no_lista.getDado());
+
+    }
 }
