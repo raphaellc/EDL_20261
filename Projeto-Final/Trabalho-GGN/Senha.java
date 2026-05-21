@@ -38,8 +38,8 @@ public class Senha {
 
     @Override
     public String toString() {
-        if (serPriotaria == true) return "\tsenha é Prioriária";
-        else return "\tsenha é Comum";
+        if (serPriotaria == true) return "P";
+        else return "N";
     }
 
 }

@@ -19,7 +19,7 @@ public class Posto {
     public String clienteEntra(Cliente clienteParaAtender) {
         clienteEmAtendimento = clienteParaAtender;
         emAtendimento = true;
-        return clienteEmAtendimento.getPessoa().getDado();
+        return clienteEmAtendimento.getNome();
     }
 
     /** Remove cliente do posto. Retorna o cliente que foi
@@ -27,7 +27,7 @@ public class Posto {
      * @returns nomeCliente;
      */
     public String clienteSai() {
-        String nomeCliente = clienteEmAtendimento.getPessoa().getDado();
+        String nomeCliente = clienteEmAtendimento.getNome();
         clienteEmAtendimento = null;
         return nomeCliente;
     }

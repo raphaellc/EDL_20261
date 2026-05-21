@@ -40,6 +40,11 @@ public class Fila<T> {
         tamanho = 1;
     }
 
+    // GETTER
+    public No<T> getInicio() {
+        return inicio;
+    }
+
     /** Insere um nó com um dado na fila.
     * @param dado
     */
@@ -116,8 +121,9 @@ public class Fila<T> {
 
     public void mostraFila() {
         No<T> noAuxiliar = inicio;
+        System.out.println("");
         while (noAuxiliar.getProximo() != null) {
-            System.out.println(noAuxiliar);
+            System.out.print(noAuxiliar + " < ");
             noAuxiliar = noAuxiliar.getProximo();
         }
         System.out.println(noAuxiliar); // mostra o dado do último nó

@@ -3,6 +3,7 @@ public class Cliente {
     private String nome;
     private Senha senhaCliente = new Senha();
     private int tempoAtendimento = 1;
+    private double probabilidadeDesistencia = 0.1;
 
     /// CONSTRUTORES
     /** Construtor mínimo para um cliente. Informe apenas o nome.
@@ -16,11 +17,21 @@ public class Cliente {
         this.nome = nomeInformado;
     }
 
+    /** Informe o nome e a senha do cliente. O tempo de atendimento
+     * é o tempo padrão de 1 turno.
+     * @param nomeInformado
+     * @param senhaInformada
+     */
     public Cliente(String nomeInformado, Senha senhaInformada) {
         this.nome = nomeInformado;
         this.senhaCliente = senhaInformada;
     }
 
+    /** Informe o nome, a senha e o tempo de atendimento (em turnos) do cliente.
+     * @param nomeInformado
+     * @param senhaInformada
+     * @param tempoAtendimentoInformado
+     */
     public Cliente(String nomeInformado, Senha senhaInformada, int tempoAtendimentoInformado) {
         this.nome = nomeInformado;
         this.senhaCliente = senhaInformada;
@@ -48,5 +59,12 @@ public class Cliente {
         tempoAtendimento = tempoAtendimentoInformado;
     }
     
+    public double setProbabilidadeDesistencia() {
+        return probabilidadeDesistencia;
+    }
 
+    @Override
+    public String toString() {
+        return nome;
+    }
 }

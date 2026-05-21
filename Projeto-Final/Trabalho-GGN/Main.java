@@ -16,10 +16,17 @@ import java.util.Scanner;
 
 public class Main {
 
-    int turno = 0; 
     Scanner inputUsuario = new Scanner(System.in);
-    int quantidadePostosAtendimento = 5;
-    Posto postosDeAtendimento[] = new Posto[quantidadePostosAtendimento];
+
+    int turno = 0; 
+
+    static final int QUANTIDADE_POSTOS_ATENDIMENTO = 5;
+    int quantidadePostosFuncionandoObrigatoriamente = 3;
+    Posto postosDeAtendimento[] = new Posto[QUANTIDADE_POSTOS_ATENDIMENTO];
+
+    Fila<Cliente> filaUnica = new Fila<>(); // A debater se usaremos a classe Fila.java ou FilaPrioritaria.java
+
+    Pilha<Senha> pilhaSenhasChamadas = new Pilha<>();
     
     public static void main(String[] args) {
         
@@ -33,12 +40,16 @@ public class Main {
 
     public void inicializa() {
         // Cria postos de atendimento do Banco Praxedes
-        for (int i=0; i<5; i++) {
+        for (int i=0; i < QUANTIDADE_POSTOS_ATENDIMENTO; i++) {
             postosDeAtendimento[i] = new Posto();
         }
 
-        // Gera alguns clientes e encadeia-os
-
+        // Gera alguns clientes e encadeia-os da fila. Senha aleatória e tempo de atendimento aleatório.
+        
+        for (int i=0; i<10; i++) {
+            Cliente novoCliente = new Cliente("Cliente " + i, new Senha(caraOuCoroa()), (int)(2*Math.random())+1);
+            filaUnica.inserirFila(novoCliente);
+        }
     }
     
     public void lacoSimulador() {
@@ -47,12 +58,20 @@ public class Main {
             turno++;
             System.out.println("Turno atual: " + turno);
 
+            filaUnica.mostraFila();
+
             System.out.println("(Enter para o próximo turno; 0 para sair)");
             String x = inputUsuario.nextLine();
             if ("0".equals(x) == true) return;
         }
     }
 
-    
+    /** Retorna 'true' ou 'falso' com aproximadamente 50% de chance cada.
+     * @return boolean
+     */
+    public boolean caraOuCoroa() {
+        return (int)(2*Math.random()) == 0;
+        
+    }
 
 }

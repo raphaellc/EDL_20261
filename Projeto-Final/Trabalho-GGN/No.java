@@ -62,6 +62,7 @@ public class No<T> {
 
 	@Override
 	public String toString() {
-		return "No{" + "dado=" + this.dado + "}";
+		//return "No{" + "dado=" + this.dado + "}";
+		return "" + this.dado; // necessário usar "" para ocorrer a conversão implícita de this.dado para string. é mais seguro do que usar this.dado.toString(), pois este pode gerar NullPointerException.
 	}
 }
