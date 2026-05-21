@@ -58,8 +58,8 @@ public class Cliente {
     public void setTempoAtendimento(int tempoAtendimentoInformado) {
         tempoAtendimento = tempoAtendimentoInformado;
     }
-    
-    public double setProbabilidadeDesistencia() {
+
+    public double getProbabilidadeDesistencia() {
         return probabilidadeDesistencia;
     }
 

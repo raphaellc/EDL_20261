@@ -1,24 +1,55 @@
 public class Posto {
     
-    boolean emAtendimento;
-    Cliente clienteEmAtendimento;
+    private int numero;
+    private boolean emFuncionamento;
+    private boolean atendendoCliente;
+    private Cliente clienteEmAtendimento;
+
+    
+
+    // TODO reavaliar a necessidade de haver 2 booleanos aqui: pode gerar situação inusitada em que o posto esteja fechado E com cliente
 
     /// CONSTRUTOR
-    /** Por padrão, o posto está livre. */
-    public Posto() {
-        this.emAtendimento = false;
-        this.clienteEmAtendimento = null;
+    /** Informe o número do posto, se está aberto, se está atendendo cliente e o nome do cliente.
+     * @param numeroInformado
+     * @param emFuncionamentoInformado
+     * @param atendendoClienteInformadoInformado
+     * @param clienteEmAtendimentoInformado
+     */
+    public Posto(int numeroInformado, boolean emFuncionamentoInformado, boolean atendendoClienteInformadoInformado, Cliente clienteEmAtendimentoInformado) {
+        this.numero = numeroInformado;
+        this.emFuncionamento = emFuncionamentoInformado;
+        this.atendendoCliente = atendendoClienteInformadoInformado;
+        this.clienteEmAtendimento = clienteEmAtendimentoInformado;
     }
 
+    // GETTER-SETTER
+    public int getNumero() {return numero;}
+    public void setNumero(int numeroInformado) {numero = numeroInformado;}
+    
+    public boolean getEmFuncionamento() {return emFuncionamento;}
+    public void setEmFuncionamento(boolean emFuncionamentoInformado) {emFuncionamento = emFuncionamentoInformado;}
+
+    public boolean getAtendendoCliente() {return atendendoCliente;}
+    public void setAtendendoCliente(boolean atendendoClienteInformado) {atendendoCliente = atendendoClienteInformado;}
+
+    public Cliente getCliente() {return clienteEmAtendimento;}
+
     /// MÉTODOS
-    /** Informe o cliente a atender. O status do posto mudará
-     * automaticamente para ocupado. Retorna o nome do cliente.
+    /** Informe o cliente a atender. O status do posto mudará automaticamente para ocupado.
+     * Retorna o nome do cliente. Se o posto estiver fechado, retornará String vazia "" com uma mensagem de aviso.
      * @param clienteParaAtender
-     * @return cliente.getDado()
+     * @return clienteParaAtender.getNome()
      */
     public String clienteEntra(Cliente clienteParaAtender) {
+        
+        if (emFuncionamento == false) {
+            System.out.println("Posto " + getNumero() + " fechado.");
+            return "";
+        }
+        
         clienteEmAtendimento = clienteParaAtender;
-        emAtendimento = true;
+        atendendoCliente = true;
         return clienteEmAtendimento.getNome();
     }
 
@@ -31,5 +62,45 @@ public class Posto {
         clienteEmAtendimento = null;
         return nomeCliente;
     }
+
+    public String converteBooleanToStringFuncionamento() {
+        if (emFuncionamento == true) return "Aberto";
+        else return "Fechado";
+    }
+
+    public String converteBooleanToStringAtendimento() {
+        if (atendendoCliente == true) return "Ocupado";
+        else return "Livre";
+    }
     
+    /** */
+    @Override
+    public String toString() {
+        
+        if (emFuncionamento == true) {
+
+            // Verificação
+            if (clienteEmAtendimento == null) {
+                return "ERRO: cliente em atendimento não existe (null)";
+            }
+
+            return "Posto nº" + getNumero()
+                              + ", "
+                              + converteBooleanToStringFuncionamento()
+                              + ", "
+                              + converteBooleanToStringAtendimento()
+                              + ": "
+                              + clienteEmAtendimento
+                              + ", "
+                              + clienteEmAtendimento.getSenha()
+                              + ", "
+                              + clienteEmAtendimento.getTempoAtendimento();
+
+        } else {
+            
+            return "Posto nº" + getNumero()
+                              + ", "
+                              + converteBooleanToStringFuncionamento();
+        }
+    }
 }

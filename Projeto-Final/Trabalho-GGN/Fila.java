@@ -40,10 +40,13 @@ public class Fila<T> {
         tamanho = 1;
     }
 
-    // GETTER
-    public No<T> getInicio() {
-        return inicio;
-    }
+    // GETTER- SETTER
+    public No<T> getInicio() {return inicio;}
+    public void setInicio(No<T> inicioInformado) {inicio = inicioInformado;}
+    public No<T> getFim() {return fim;}
+    public void setFim(No<T> fimInformado) {fim = fimInformado;}
+    public int getTamanho() {return tamanho;}
+    public void setTamanho(int tamanhoInformado) {tamanho = tamanhoInformado;}
 
     /** Insere um nó com um dado na fila.
     * @param dado

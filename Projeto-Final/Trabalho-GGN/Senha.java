@@ -13,8 +13,19 @@ public class Senha {
      * Use 'true' para senha prioriária ou 'false' para senha comum.
      * @param serPrioritaria
      */
-    public Senha(boolean prioridade_informada) {
-        this.serPriotaria = prioridade_informada;
+    public Senha(boolean priodidadeInformada) {
+        this.serPriotaria = priodidadeInformada;
+    }
+
+    /** Construtor completo para uma senha.
+     * Use 'true' para senha prioriária ou 'false' para senha comum.
+     * Informe também o número da senha.
+     * @param prioridadeInformada
+     * @param numeroInformado
+     */
+    public Senha(boolean prioridadeInformada, int numeroInformado) {
+        this.serPriotaria = prioridadeInformada;
+        this.numero = numeroInformado;
     }
 
     /// GETTER-SETTER
@@ -36,10 +47,19 @@ public class Senha {
         return serPriotaria;
     }
 
+    /** Este "Override" utiliza um operador ternário, significando:
+     * "se a senha for prioritária, imprima "P"; caso contrário, imprima "N"
+    */
     @Override
     public String toString() {
-        if (serPriotaria == true) return "P";
-        else return "N";
+        String x = (serPriotaria==true) ? "P" : "N";
+        return "nº" + numero
+                    + "("
+                    + x
+                    + ")";
+
+        //if (serPriotaria == true) return "P";
+        //else return "N";
     }
 
 }
