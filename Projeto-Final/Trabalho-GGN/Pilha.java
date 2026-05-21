@@ -34,7 +34,7 @@ public class Pilha<T> {
     /** Construtor para Pilha com 1 nó informado
      * @param dado_informado objeto a ser contido no nó
     */
-   public Pilha(No<T> inicio_informado) {
+    public Pilha(No<T> inicio_informado) {
         inicio = inicio_informado;
         fim = inicio_informado;
         tamanho = 1;
