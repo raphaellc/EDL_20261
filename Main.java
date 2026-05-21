@@ -1,5 +1,8 @@
-void main() {
+import java.util.Random;
+import java.util.ArrayList;
+import java.util.LinkedList;
 
+void main() {
     System.out.println("[=[ - [=[  Isso é um sinal que está tudo funcionando  ]=] - ]=]\n");
 
     Fila<String> Fila_Do_Super = new Fila<String>();
@@ -16,18 +19,32 @@ void main() {
     Fila_Do_Super.InserirFila("Bob Esponja");
     Fila_Do_Super.InserirFila("Mãe do Musculoso");
     Fila_Do_Super.InserirFila("Cebolinha");
+    Fila_Do_Super.InserirFila("Goku");
+    Fila_Do_Super.InserirFila("Minos Prime");
+    Fila_Do_Super.InserirFila("Judas");
 
     System.out.println("Pessoa na frente da fila: " + Fila_Do_Super.frenteFila() + " || Tamanho da Fila: " + Fila_Do_Super.tamanhoFila());
 
     Fila_Do_Super.listaFila();
 
+    System.out.println("Removendo um senhor da fila:");
     Fila_Do_Super.removerFila();
 
     System.out.println("Pessoa na frente da fila: " + Fila_Do_Super.frenteFila() + " || Tamanho da Fila: " + Fila_Do_Super.tamanhoFila());
 
+    System.out.println("Pessoas na fila:");
     Fila_Do_Super.listaFila();
 
-/// ________________________________________________________________________________________________________________
+    System.out.println("Atendendo alguns clientes:");
+    Fila_Do_Super.atender();
+    Fila_Do_Super.atender();
+    Fila_Do_Super.atender();
+
+    System.out.println("\nClientes atendidos:"); Fila_Do_Super.listaAtendidos();
+    System.out.println("\nClientes restantes:");  Fila_Do_Super.listaFila();
+
+
+/// ____________________________________________________________________________________________________________________
 
     System.out.println("\n[{}] Pilha:\n");
 
@@ -39,6 +56,7 @@ void main() {
     Pilha_de_Manga.empilhar("Demon Slayer");
     Pilha_de_Manga.empilhar("Jujutsu Kaisen");
     Pilha_de_Manga.empilhar("Kasamoto Days");
+
 
     System.out.println("Tamanho da Pilha: " + Pilha_de_Manga.getTamanho());
     System.out.println("Manga no topo da Pilha: " + Pilha_de_Manga.getTopo());
@@ -59,12 +77,14 @@ public class No<T> {
     private No<T> proximo;
     private No<T> anterior;
     boolean privilegiado;
+    private int senha;
 
     public No(T dado) {
         this.dado = dado;
         this.proximo = null;
         this.anterior = null;
         this.privilegiado = false;
+        this.senha = 0;
     }
 
     public T getDado()               { return dado; }
@@ -75,6 +95,8 @@ public class No<T> {
     public void setAnterior(No<T> a) { this.anterior = a; }
     public boolean isPrivilegiado()  { return privilegiado; }
     public void setPrivilegiado(boolean privilegiado) { this.privilegiado = privilegiado; }
+    public int getSenha()            { return senha; }
+    public void setSenha(int senha)  { this.senha = senha; }
 }
 
 
@@ -82,6 +104,10 @@ public class Fila<T> {
     No<T> inicio;
     No<T> fim;
     int tamanho;
+    ArrayList<T> Atendidos_Fila = new ArrayList<T>();
+    ArrayList<Integer> Senhas_Atendidos = new ArrayList<>();
+    Random Gerador_Senha = new Random();
+
 
     public Fila() {
         this.inicio = null;
@@ -91,7 +117,6 @@ public class Fila<T> {
 
     public void InserirFila(T dado){
         No<T> novoNo = new No(dado);
-
         if (Empty()) {
             this.inicio = novoNo;
             this.fim = this.inicio;
@@ -130,6 +155,30 @@ public class Fila<T> {
             return dado_return;
         }
     }
+
+    public void atender(){
+        if (Empty()) {
+            return;
+        }
+
+        No<T> dado_atendimento = this.inicio;
+        int num_senha = Gerador_Senha.nextInt(1111 , 9999);
+
+        dado_atendimento.setSenha(num_senha);
+
+        if (dado_atendimento.isPrivilegiado() == false) {
+            System.out.println(dado_atendimento.getDado() + "   Atendido");
+        }
+
+        else {
+            System.out.println(dado_atendimento.getDado() + "   Atendido (Prioritario)");
+        }
+
+        Atendidos_Fila.add(dado_atendimento.getDado());
+        Senhas_Atendidos.add(dado_atendimento.getSenha());
+        removerFila();
+    }
+
     public T frenteFila(){
 
         if (Empty()) { return null; }
@@ -152,9 +201,6 @@ public class Fila<T> {
         else {
 
             No<T> dado_lista = this.inicio;
-
-            System.out.println("Quantidade de pessoas: " + tamanhoFila());
-
             while (dado_lista.getAnterior() != null) {
                 if (dado_lista.isPrivilegiado() == true) { System.out.println(" - " + dado_lista.getDado() + " [Privilegiado]"); }
                 else { System.out.println(" - " + dado_lista.getDado()); }
@@ -165,6 +211,11 @@ public class Fila<T> {
 
         }
 
+    }
+
+    public void listaAtendidos() {
+        System.out.println("Nomes: " + Atendidos_Fila);
+        System.out.println("Senhas: " + Senhas_Atendidos);
     }
 
 }
@@ -230,6 +281,13 @@ public class Pilha<T> {
             no_lista = no_lista.getProximo();
         }
         System.out.println(" - " + no_lista.getDado());
+
+    }
+
+    public void listaSenhas() {
+        if (empty()) {
+            return;
+        }
 
     }
 }
