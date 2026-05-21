@@ -15,7 +15,7 @@ public class Fila <T>{
 
     //Métodos: inserirFila, removerFila, tamanhoFila, vaziaFila
     public void inserirFila(T dado){
-        No<T> novoNo = new No(dado);
+        No<T> novoNo = new No<>(dado);
         if(estaVazia()){
             this.inicio = novoNo;
             this.fim = this.inicio;
