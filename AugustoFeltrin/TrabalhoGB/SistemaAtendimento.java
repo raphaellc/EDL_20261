@@ -1,5 +1,3 @@
-package AugustoFeltrin.TrabalhoGB;
-
 public class SistemaAtendimento {
     
     // Filas de espera
@@ -56,5 +54,20 @@ public class SistemaAtendimento {
         contadorPrioritaria++;
         Senha senha = new Senha('P', contadorPrioritaria);
         filaPrioritaria.enfileirar(senha);
+    }
+    
+    /*private*/ public Senha proximaSenha() {
+    	if(sequenciaNormais < 2) {
+    		if(!filaNormal.estaVazia()) {
+    			Senha senha = filaNormal.desenfileirar();
+    			sequenciaNormais++;
+    			return senha;
+    		} 
+    	} else if (!filaPrioritaria.estaVazia()) {
+    			Senha senha = filaPrioritaria.desenfileirar();
+    			sequenciaNormais = 0;
+    			return senha;
+    	}
+		return null;
     }
 }
