@@ -16,6 +16,7 @@ e executado na versão:
  */
 
 import java.util.Scanner;
+import java.util.ArrayList;
 
 public class Main {
 
@@ -55,18 +56,21 @@ public class Main {
         }
 
         // Gera alguns clientes e encadeia-os da fila. Senha aleatória e tempo de atendimento aleatório.
-        for (int i=0; i<10; i++) {
+        for (int i=0; i<20; i++) {
             Cliente novoCliente = new Cliente("Cliente " + i, geraSenha(), (int)(2*Math.random())+1);
             filaUnica.getFila().inserirFila(novoCliente);
         }
 
+        /*
         // Ocupa os postos abertos
         for (int i=0; i < QUANTIDADE_POSTOS_ATENDIMENTO; i++) {
             if (postosDeAtendimento[i].getEmFuncionamento() == true &&
                 postosDeAtendimento[i].getAtendendoCliente() == false) {
                     postosDeAtendimento[i].clienteEntra(filaUnica.getFila().removerFila());
-                }
+            }
         }
+             */
+
     }
     
     public void lacoSimulador() {
@@ -74,6 +78,9 @@ public class Main {
         while(true) {
             turno++;
             System.out.println("Turno atual: " + turno);
+
+            decideDesistenciaClientes();
+           // decideChegaNovoClienteNaFila()
 
             mostraPostos();
             filaUnica.mostraFilaPrioritaria();
@@ -88,8 +95,7 @@ public class Main {
      * @return boolean
      */
     public boolean caraOuCoroa() {
-        return (int)(2*Math.random()) == 0;
-        
+        return (int)(2*Math.random()) == 0;      
     }
 
     public Senha geraSenha() {
@@ -113,11 +119,52 @@ public class Main {
         return caraOuCoroa();
     }
 
-    /** Sorteia se um cliente na fila desistirá */
-    public boolean sorteiaDesistencia(Cliente clientePodeDesistir) {
+    /** Sorteia se um cliente na fila desistirá. O cliente possui uma pequena probabilidade de
+     * desistir de esperar. O valor padrão é 10% de chance. Consulte a classe <b>Cliente.java</b>.
+     */
+    public boolean sorteiaDesistencia(Cliente clientePodendoDesistir) {
         double x = Math.random();
-        if ((0 <= x) && (x < clientePodeDesistir.getProbabilidadeDesistencia())) {
-            filaUnica.getFila().removerFilaPrioritaria(i);
+        if ((0 <= x) && (x < clientePodendoDesistir.getProbabilidadeDesistencia())) {
+            return true;
+        } else {
+            return false;
         }
+    }
+
+    /** Método que decide se um cliente sai ou não da fila, baseado na sua probabilidade de desistência.
+     * Quando um cliente decide sair da fila, o nó que o contém não é removido imediatamente.
+     * Antes, é preciso guardar uma referência a esse cliente em um ArrayList. Após percorrer toda a fila
+     * e avaliar todos os clientes desistentes (pois pode haver mais de um em um dado turno), os clientes
+     * elencados para sair são removidos da fila através do método auxiliar <b>removeClientesDesistentes()</b>.
+     * Esta remoção em dois passos é prudente pois evita acoplar a travessia da fila com remoção de nós da mesma fila.
+     */
+    public void decideDesistenciaClientes() {
+
+        ArrayList<Cliente> listaClientesDesistentes = new ArrayList<>();
+        No<Cliente> noAuxiliar = filaUnica.getFila().getInicio();
+
+        while (noAuxiliar != null) {
+            Cliente clienteAuxiliar = noAuxiliar.getDado();
+
+            if (sorteiaDesistencia(clienteAuxiliar) == true) {
+                
+                listaClientesDesistentes.addLast(clienteAuxiliar);
+                System.out.println(clienteAuxiliar + " desistiu de esperar.");
+            }
+            noAuxiliar = noAuxiliar.getProximo();
+        }
+        System.out.println("Lista de clientes desistentes = " + listaClientesDesistentes);
+        removeClientesDesistentes(listaClientesDesistentes);
+    }
+
+    /** Este método usa uma expressão lambda para percorrer todos os clientes de uma ArrayList,
+     * executando a operação de remoção da classe FilaPrioritaria.java.
+     * @param lista
+     */
+    public void removeClientesDesistentes(ArrayList<Cliente> lista) {
+        lista.forEach((Cliente c) -> {
+            filaUnica.removerFilaPrioritaria(c.getSenha().getNumero());
+            }
+        ); 
     }
 }

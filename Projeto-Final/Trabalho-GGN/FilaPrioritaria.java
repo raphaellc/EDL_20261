@@ -33,6 +33,11 @@ public class FilaPrioritaria<T> {
 	 * modo mais compreensivo para o usuário do que na classe Fila.java.
 	*/
 	public void mostraFilaPrioritaria() {
+		if (fila.filaVazia() == true) {
+	        System.out.println("Fila está vazia. Nada para mostrar.");
+            return;
+        }
+
 		No<Cliente> noAuxiliar = fila.getInicio(); // precisa de getter
         System.out.println("");
         while (noAuxiliar.getProximo() != null) {
@@ -44,7 +49,7 @@ public class FilaPrioritaria<T> {
 
 	/** Remove um nó da fila através do número de sua senha. Este método é baseado no método removerFila()
 	 * da classe básica Fila.java, mas difere no ponto de que permite remover um nó do meio da fila.
-	 */
+	*/ 
 	public Cliente removerFilaPrioritaria(int numeroSenha) {
 		// caso tamanho == 0
         if (fila.filaVazia() == true) {
@@ -53,53 +58,64 @@ public class FilaPrioritaria<T> {
         }
 
 		Cliente clienteAretornar;
-
-		// caso tamanho == 1
-		if (fila.getTamanho() == 1) {
-			clienteAretornar = ;
-			fila.setInicio(null);
-			fila.setFim(null);
-			fila.setTamanho(fila.getTamanho()-1);					
-		}
 		
-        // caso tamanho > 0
+        // caso tamanho > 0; percorrer fila
 		No<Cliente> noAuxiliar = fila.getInicio();
-
+		
 		while (noAuxiliar != null) {
 
-			Cliente clienteAtual = noAuxiliar.getDado();	// apontando para o primeiro cliente da fila
+			//System.out.println("tamanho da fila=" + fila.getTamanho());
 
 			// compara o número da senha informado com o número da senha dos clientes na fila
-			if (numeroSenha == clienteAtual.getSenha().getNumero()) {
+			if (numeroSenha == noAuxiliar.getDado().getSenha().getNumero()) {
 
-			
+				// caso tamanho == 1
+				// noAuxiliar = A. Remover o nó A:
+				// null <- A -> null 
+				if (fila.getTamanho() == 1) {
+					clienteAretornar = noAuxiliar.getDado();
+					fila.setInicio(null);
+					fila.setFim(null);
+					fila.setTamanho(fila.getTamanho()-1);
+				} 		
 
 				// caso primeiro da fila
-				else if (noAuxiliar == fila.getInicio()) {
-					fila.setInicio(noAuxiliar.getProximo())
-
+				// noAuxiliar = A. Remover o nó A:
+				// A <-> B <-> ...
+				else if (noAuxiliar.equals(fila.getInicio())) {   // TALVEZ PRECISE USAR .EQUALS()
+					clienteAretornar = noAuxiliar.getDado();
+					fila.setInicio(noAuxiliar.getProximo());		 // inicio agora é o segundo nó
+					fila.getInicio().getAnterior().setProximo(null); // remove A -> B
+					fila.getInicio().setAnterior(null);              // remove A <- B
 				}
-				
-
-
-				// atualiza ponteiros fazendo a remoção manual de todos os ponteiros envolvidos na operação...
-				// ...mas verifica antes se o cliente não é o último da fila; se for, o tratamento é diferente.
 
 				// caso último da fila
-				if (noAuxiliar.getProximo().getProximo() == null) {
-					// noAuxiliar = C. Remover o nó D:
-					// ... <-> C <-> D -> null
-					noAuxiliar.getProximo().setAnterior(null);  // remove C <- D
-					noAuxiliar.setProximo(null);                // remove C -> D
+				// noAuxiliar = D. Remover o nó D:
+				// ... <-> C <-> D -> null
+				else if (noAuxiliar.getProximo() == null) {
+					clienteAretornar = noAuxiliar.getDado();
+					noAuxiliar.getAnterior().setProximo(null);  // remove C -> D
+					noAuxiliar.setAnterior(null);               // remove C <- D
+					// avaliar se precisa informar o fim de novo
+					
+				// caso nó qualquer no meio da fila
+				// noAuxiliar = B. Remover o nó B de
+				// ... <-> A <-> B <-> C <-> ...
 				} else {
-					// caso nó qualquer no meio da fila
-					// noAuxiliar = A. Remover o nó B de
-					// ... <-> A <-> B <-> C <-> ...
+					clienteAretornar = noAuxiliar.getDado();
+					noAuxiliar.getAnterior().setProximo(noAuxiliar.getProximo());                 // cria   A -> C (removeu A -> B)
+					noAuxiliar.setProximo(null);                                                  // remove B -> C
+					noAuxiliar.getAnterior().getProximo().setAnterior(noAuxiliar.getAnterior());  // cria   A <- C (removeu B <- C)
+					noAuxiliar.setAnterior(null);                                                 // remove A <- B
+
+					/*
 					noAuxiliar.setProximo(noAuxiliar.getProximo().getProximo()); //   cria A -> C
 					noAuxiliar.getProximo().getAnterior().setProximo(null);      // remove B -> C					
 					noAuxiliar.getProximo().getAnterior().setAnterior(null);     // remove A <- B
 					noAuxiliar.getProximo().setAnterior(noAuxiliar);             //   cria A <- C
+					 */
 				}
+
 				fila.setTamanho(fila.getTamanho()-1);
 				return clienteAretornar;
 			}
@@ -109,6 +125,7 @@ public class FilaPrioritaria<T> {
 		System.out.println("ATENÇÃO: senha nº" + numeroSenha + " não localizada. Retornando nulo.");
 		return null;
 	}
+		
 
 	public String mostraClienteCompleto(Cliente clienteInformado) {
 		return "\n" + clienteInformado

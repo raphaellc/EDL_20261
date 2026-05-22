@@ -40,7 +40,7 @@ public class Fila<T> {
         tamanho = 1;
     }
 
-    // GETTER- SETTER
+    // GETTER-SETTER
     public No<T> getInicio() {return inicio;}
     public void setInicio(No<T> inicioInformado) {inicio = inicioInformado;}
     public No<T> getFim() {return fim;}
@@ -123,6 +123,11 @@ public class Fila<T> {
     }
 
     public void mostraFila() {
+        if (filaVazia() == true) {
+            System.out.println("Fila está vazia. Nada para mostrar.");
+            return;
+        }
+        
         No<T> noAuxiliar = inicio;
         System.out.println("");
         while (noAuxiliar.getProximo() != null) {
