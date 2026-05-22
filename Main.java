@@ -29,43 +29,47 @@ void main() {
 
        else if (choice == 1) {
 
+           boolean loop = true;
+
             System.out.println("\n[{}] Fila:\n");
-
-            System.out.println("Tentando remover uma fila vazia:");
-            if (Fila_Do_Super.removerFila() == null) {
-                System.out.println("Mais vazia q minha alma\n");
-            }
-
 
             Fila_Do_Super.InserirFila("Obama");
             Fila_Do_Super.InserirFila("Bob Esponja");
             Fila_Do_Super.InserirFila("Mãe do Musculoso");
             Fila_Do_Super.InserirFila("Cebolinha");
             Fila_Do_Super.InserirFila("Goku");
-            Fila_Do_Super.InserirFila("Minos Prime");
+            Fila_Do_Super.InserirFila("Gabriel Ultrakill");
             Fila_Do_Super.InserirFila("Judas");
+            Fila_Do_Super.InserirFila("Mike Tyson");
+            Fila_Do_Super.InserirFila("Leon Kennedy");
+            Fila_Do_Super.InserirFila("Dante Sparda");
+            Fila_Do_Super.InserirFila("Sans Undertale");
 
-            System.out.println("Pessoa na frente da fila: " + Fila_Do_Super.frenteFila() + " || Tamanho da Fila: " + Fila_Do_Super.tamanhoFila());
 
-            Fila_Do_Super.listaFila();
+            while (loop == true) {
 
-            System.out.println("Removendo um senhor da fila:");
-            Fila_Do_Super.removerFila();
+                System.out.println("Pessoa na frente da fila: " + Fila_Do_Super.frenteFila() + " || Tamanho da Fila: " + Fila_Do_Super.tamanhoFila());
 
-            System.out.println("Pessoa na frente da fila: " + Fila_Do_Super.frenteFila() + " || Tamanho da Fila: " + Fila_Do_Super.tamanhoFila());
+                Fila_Do_Super.listaFila();
 
-            System.out.println("Pessoas na fila:");
-            Fila_Do_Super.listaFila();
+                System.out.println("Pessoas na fila:");
+                Fila_Do_Super.listaFila();
 
-            System.out.println("Atendendo alguns clientes:");
-            Fila_Do_Super.atender();
-            Fila_Do_Super.atender();
-            Fila_Do_Super.atender();
+                System.out.println("Atendendo um cliente:");
+                Fila_Do_Super.atender();
 
-            System.out.println("\nClientes atendidos:");
-            Fila_Do_Super.listaAtendidos();
-            System.out.println("\nClientes restantes:");
-            Fila_Do_Super.listaFila();
+                System.out.println("\nClientes atendidos:");
+                Fila_Do_Super.listaAtendidos();
+                if (Fila_Do_Super.Empty() == true) {
+                    System.out.println("\n Todos os clientes foram atendidos");
+                    loop = false;
+                }
+                else {
+                    System.out.println("\nClientes restantes:");
+                    Fila_Do_Super.listaFila();
+                }
+
+            }
 
         }
 /// ____________________________________________________________________________________________________________________
