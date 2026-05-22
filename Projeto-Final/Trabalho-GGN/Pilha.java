@@ -112,7 +112,7 @@ public class Pilha<T> {
 
         No<T> noAuxiliar = topo;
         while (noAuxiliar.getAnterior() != null) {
-            System.out.println(noAuxiliar);
+            System.out.print(noAuxiliar + " ");
             noAuxiliar = noAuxiliar.getAnterior();
         }
         System.out.println(noAuxiliar); // mostra o dado da base da pilha

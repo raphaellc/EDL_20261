@@ -34,6 +34,9 @@ public class Main {
     int NumeradorDeSenhas = (int)(50*Math.random()); // inicia a numeração de senhas em um número aleatório inicial
     Pilha<Senha> pilhaSenhasChamadas = new Pilha<>();
     
+    Pilha<Cliente> historicoDesistentes = new Pilha<>();
+    Pilha<Cliente> historicoAtendidos = new Pilha<>();
+
     public static void main(String[] args) {
         
         Main BancoPraxedes = new Main();
@@ -42,6 +45,12 @@ public class Main {
         BancoPraxedes.lacoSimulador();
 
         System.out.println("\nVocê saiu do simulador de fila de banco Praxedes.");
+        
+        System.out.println("\n--- RELATÓRIO FINAL ---");
+        System.out.println("Clientes Atendidos:");
+        BancoPraxedes.historicoAtendidos.mostraPilha();
+        System.out.println("\nClientes Desistentes:");
+        BancoPraxedes.historicoDesistentes.mostraPilha();
     }
 
     public void inicializa() {
@@ -57,7 +66,7 @@ public class Main {
 
         // Gera alguns clientes e encadeia-os da fila. Senha aleatória e tempo de atendimento aleatório.
         for (int i=0; i<20; i++) {
-            Cliente novoCliente = new Cliente("Cliente " + i, geraSenha(), (int)(Math.random()* (5 - 1)) + 1);
+            Cliente novoCliente = new Cliente("Cliente " + i, geraSenha(), (int)(Math.random()* 4) + 1);
             filaUnica.getFila().inserirFila(novoCliente);
         }
     }
@@ -72,6 +81,11 @@ public class Main {
            // decideChegaNovoClienteNaFila()
 
             processaAtendimentoPostos();
+
+            System.out.println("\n--- Histórico de Atendidos ---");
+            historicoAtendidos.mostraPilha();
+            System.out.println("\n--- Histórico de Desistentes ---");
+            historicoDesistentes.mostraPilha();
 
            // metodo chamar clientes n pode funcionar no primeiro turno, para motivos de melhro visualizacao
             if (turno > 1) { 
@@ -151,19 +165,22 @@ public class Main {
             }
             noAuxiliar = noAuxiliar.getProximo();
         }
-        System.out.println("Lista de clientes desistentes = " + listaClientesDesistentes);
         removeClientesDesistentes(listaClientesDesistentes);
+        
+        // Guarda os clientes desistentes no histórico de desistentes
+        for (Cliente c : listaClientesDesistentes) {
+            historicoDesistentes.inserirPilha(c);
+        }
     }
 
-    /** Este método usa uma expressão lambda para percorrer todos os clientes de uma ArrayList,
+    /** Este método percorre todos os clientes de um ArrayList,
      * executando a operação de remoção da classe FilaPrioritaria.java.
      * @param lista
      */
     public void removeClientesDesistentes(ArrayList<Cliente> lista) {
-        lista.forEach((Cliente c) -> {
+        for (Cliente c : lista) {
             filaUnica.removerFilaPrioritaria(c.getSenha().getNumero());
-            }
-        ); 
+        }
     }
 
     /** Varre os postos de atendimento procurando postos abertos e livres.
@@ -210,6 +227,7 @@ public class Main {
                 
                 if (clienteNoPosto.getTempoAtendimento() <= 0) {
                     postosDeAtendimento[i].clienteSai();
+                    historicoAtendidos.inserirPilha(clienteNoPosto); // Guarda o cliente atendido no histórico de atendidos
                     System.out.println(">> ATENDIMENTO CONCLUÍDO: " + clienteNoPosto.getNome() + " concluiu o atendimento e liberou o Posto " + postosDeAtendimento[i].getNumero());
                 }
             }
