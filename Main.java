@@ -47,13 +47,14 @@ void main() {
 
 
             while (loop == true) {
-                
+
                 System.out.println("Pessoa na frente da fila: " + Fila_Do_Super.frenteFila() + " || Tamanho da Fila: " + Fila_Do_Super.tamanhoFila());
 
                 Fila_Do_Super.listaFila();
 
                 System.out.println("Pessoas na fila:");
                 Fila_Do_Super.listaFila();
+                Fila_Do_Super.listaSenhas();
 
                 System.out.println("Atendendo um cliente:");
                 Fila_Do_Super.atender();
@@ -64,11 +65,6 @@ void main() {
                     System.out.println("\n Todos os clientes foram atendidos");
                     loop = false;
                 }
-                else {
-                    System.out.println("\nClientes restantes:");
-                    Fila_Do_Super.listaFila();
-                }
-
             }
 
         }
@@ -136,7 +132,7 @@ public class Fila<T> {
     No<T> fim;
     int tamanho;
     ArrayList<T> Atendidos_Fila = new ArrayList<T>();
-    ArrayList<Integer> Senhas_Atendidos = new ArrayList<>();
+    ArrayList<Integer> Senhas_Lista = new ArrayList<>();
     Random Gerador_Senha = new Random();
     Random Privilegiador = new Random();
 
@@ -159,6 +155,9 @@ public class Fila<T> {
         this.fim = novoNo;
 
         int coinflip = Privilegiador.nextInt(3) + 1;
+        int num_senha = Gerador_Senha.nextInt(1111 , 9999);
+        novoNo.setSenha(num_senha);
+        Senhas_Lista.add(num_senha);
 
         if (coinflip == 3) { novoNo.setPrivilegiado(true); }
         else { novoNo.setPrivilegiado(false); }
@@ -194,26 +193,24 @@ public class Fila<T> {
         }
 
         No<T> dado_atendimento = this.inicio;
-        int num_senha = Gerador_Senha.nextInt(1111 , 9999);
         int contador = 1;
 
-        dado_atendimento.setSenha(num_senha);
-
         if (dado_atendimento.isPrivilegiado() == false) {
+
+            if (dado_atendimento.isPrivilegiado() == false && contador == 3) {
+                while (dado_atendimento.isPrivilegiado() == false && dado_atendimento.getProximo() != null) {
+                    dado_atendimento.getProximo();
+                }
+
+                if (dado_atendimento.isPrivilegiado() == true && dado_atendimento.getProximo() == null) {
+                    System.out.println(dado_atendimento.getDado() + "   Atendido (Prioritario)");
+                }
+
+                else { return; }
+            }
+
             System.out.println(dado_atendimento.getDado() + "   Atendido");
             contador++;
-        }
-
-        else if (dado_atendimento.isPrivilegiado() == false && contador == 3) {
-            while (dado_atendimento.isPrivilegiado() == false && dado_atendimento.getProximo() != null) {
-                dado_atendimento.getProximo();
-            }
-
-            if (dado_atendimento.isPrivilegiado() == true && dado_atendimento.getProximo() == null) {
-                System.out.println(dado_atendimento.getDado() + "   Atendido (Prioritario)");
-            }
-
-            else { return; }
         }
         else {
             System.out.println(dado_atendimento.getDado() + "   Atendido (Prioritario)");
@@ -221,7 +218,6 @@ public class Fila<T> {
         }
 
         Atendidos_Fila.add(dado_atendimento.getDado());
-        Senhas_Atendidos.add(dado_atendimento.getSenha());
         removerFila();
     }
 
@@ -261,7 +257,10 @@ public class Fila<T> {
 
     public void listaAtendidos() {
         System.out.println("Nomes: " + Atendidos_Fila);
-        System.out.println("Senhas: " + Senhas_Atendidos);
+    }
+
+    public void listaSenhas() {
+        System.out.println("Senhas: " + Senhas_Lista);
     }
 
 }
@@ -327,13 +326,6 @@ public class Pilha<T> {
             no_lista = no_lista.getProximo();
         }
         System.out.println(" - " + no_lista.getDado());
-
-    }
-
-    public void listaSenhas() {
-        if (empty()) {
-            return;
-        }
 
     }
 }
