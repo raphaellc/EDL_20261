@@ -21,4 +21,37 @@ public class Posto {
         senhaAtual = null;
         ocupado = false;
     }
+    
+    public int getId() {
+    	return id;
+    }
+    
+    public boolean isAberto() {
+    	return aberto;
+    }
+    
+    public void setAberto(boolean aberto) {
+    	this.aberto = aberto;
+    }
+    
+    public boolean isOcupado() {
+    	return ocupado;
+    }
+    
+    public Senha getSenhaAtual() {
+    	return senhaAtual;
+    }
+    
+    @Override
+    public String toString() {
+    	if(!aberto) {
+    		return "Posto " + id + " - Fechado"; 
+    	}
+    	else if(ocupado) {
+    		return "Posto " + id + " - Ocupado: " + senhaAtual; 
+    	}
+    	else {
+    		return "Posto " + id + " - Livre"; 
+    	}
+    }
 }
