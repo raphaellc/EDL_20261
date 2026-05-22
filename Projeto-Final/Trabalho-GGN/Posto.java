@@ -79,9 +79,13 @@ public class Posto {
         
         if (emFuncionamento == true) {
 
-            // Verificação
             if (clienteEmAtendimento == null) {
-                return "ERRO: cliente em atendimento não existe (null)";
+                // se o posto estiver aberto, mas sem cliente, retorna apenas o status do posto
+                return "Posto nº" + getNumero()
+                                  + ", "
+                                  + converteBooleanToStringFuncionamento()
+                                  + ", "
+                                  + converteBooleanToStringAtendimento();
             }
 
             return "Posto nº" + getNumero()
