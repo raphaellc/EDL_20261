@@ -14,29 +14,26 @@ e executado na versão:
 
 /** Pilha de nós encadeados por ponteiros nas duas direções.
 * Cada nó da pilha possui dois ponteiros: um para o nó próximo, um para o nó anterior.
-* O nó "início" é o nó mais em baixo da pilha. O nó "fim" é o nó mais no topo da pilha.
-* Novos nós são inseridos sempre ao fim da pilha. Ao remover um nó, o nó "fim" é removido.
+* O nó "topo" é o nó no topo da pilha.
+* Novos nós são inseridos sempre no topo da pilha. Ao remover um nó, o nó do topo é removido.
 */
 public class Pilha<T> {
 
-    private No<T> inicio;
-    private No<T> fim;
+    private No<T> topo;
     private int tamanho;
 
 	/** Construtor para Pilha vazia
  	*/
     public Pilha() {
-        inicio = null;
-        fim = null;
+        topo = null;
         tamanho = 0;
     }
 
     /** Construtor para Pilha com 1 nó informado
      * @param dado_informado objeto a ser contido no nó
     */
-   public Pilha(No<T> inicio_informado) {
-        inicio = inicio_informado;
-        fim = inicio_informado;
+   public Pilha(No<T> topo_informado) {
+        topo = topo_informado;
         tamanho = 1;
     }
 
@@ -47,16 +44,15 @@ public class Pilha<T> {
 
         // caso tamanho == 0
         if (pilhaVazia() == true) {
-            inicio = new No<T>(dado);
-            fim = inicio;
+            topo = new No<T>(dado);
             tamanho++;
             return;
         }
         
         // caso tamanho > 0
-        No<T> novoNo = new No<T>(dado, fim, null);
-        fim.setProximo(novoNo);
-        fim = novoNo;
+        No<T> novoNo = new No<T>(dado, topo, null);
+        topo.setProximo(novoNo);
+        topo = novoNo;
         tamanho++;
         return;
     }
@@ -73,17 +69,16 @@ public class Pilha<T> {
 
         // caso tamanho == 1
         if (tamanho == 1) {
-            valorAretornar = fim.getDado();
-            inicio = null;
-            fim = null;
+            valorAretornar = topo.getDado();
+            topo = null;
             tamanho--;
             return valorAretornar;
         }
 
         // caso Pilha com tamanho > 1
-        valorAretornar = fim.getDado();
-        fim = fim.getAnterior();
-        fim.getProximo().setAnterior(null);
+        valorAretornar = topo.getDado();
+        topo = topo.getAnterior();
+        topo.getProximo().setAnterior(null);
             /* A linha acima remove o ponteiro C <- D (o último nó apontando para o penúltimo nó).
             Embora em Java isto não seja obrigatório, reflete uma prática "manual" de desreferen-
             ciamento, que se aplicaria a linguagens como C/C++. Já, a linha a seguir remove o ponteiro
@@ -91,19 +86,14 @@ public class Pilha<T> {
             para remoção na memória. Porém, eliminando-se os dois ponteiros C <-> D, o nó D fica
             completamente isolado, o que é didaticamente aceitável para este exercício.
             */
-        fim.setProximo(null);
+        topo.setProximo(null);
         tamanho--;
         return valorAretornar;
     }
 
-    public T fimPilha() {
+    public T topoPilha() {
         if (pilhaVazia() == true) return null;
-        return fim.getDado();
-    }
-
-    public T inicioPilha() {
-        if (pilhaVazia() == true) return null;
-        return inicio.getDado();
+        return topo.getDado();
     }
 
     public int tamanhoPilha() {
@@ -115,12 +105,17 @@ public class Pilha<T> {
     }
 
     public void mostraPilha() {
-        No<T> noAuxiliar = inicio;
-        while (noAuxiliar.getProximo() != null) {
-            System.out.println(noAuxiliar);
-            noAuxiliar = noAuxiliar.getProximo();
+        if (pilhaVazia() == true) {
+            System.out.println("Pilha está vazia. Nada para mostrar.");
+            return;
         }
-        System.out.println(noAuxiliar); // mostra o dado do último nó
+
+        No<T> noAuxiliar = topo;
+        while (noAuxiliar.getAnterior() != null) {
+            System.out.println(noAuxiliar);
+            noAuxiliar = noAuxiliar.getAnterior();
+        }
+        System.out.println(noAuxiliar); // mostra o dado da base da pilha
     }
 
 }
