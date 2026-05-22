@@ -1,6 +1,6 @@
 import java.util.Random;
 import java.util.ArrayList;
-import java.util.LinkedList;
+import java.util.Scanner;
 
 void main() {
     System.out.println("[=[ - [=[  Isso é um sinal que está tudo funcionando  ]=] - ]=]\n");
@@ -8,68 +8,95 @@ void main() {
     Fila<String> Fila_Do_Super = new Fila<String>();
     Pilha<String> Pilha_de_Manga = new Pilha<String>();
 
-    System.out.println("\n[{}] Fila:\n");
+    boolean menu = true;
+    Scanner cin = new Scanner(System.in);
+    int choice;
 
-    System.out.println("Tentando remover uma fila vazia:");
-   if (Fila_Do_Super.removerFila() == null) {
-       System.out.println("Mais vazia q minha alma\n");
-   };
+    while (menu == true) {
 
-    Fila_Do_Super.InserirFila("Obama");
-    Fila_Do_Super.InserirFila("Bob Esponja");
-    Fila_Do_Super.InserirFila("Mãe do Musculoso");
-    Fila_Do_Super.InserirFila("Cebolinha");
-    Fila_Do_Super.InserirFila("Goku");
-    Fila_Do_Super.InserirFila("Minos Prime");
-    Fila_Do_Super.InserirFila("Judas");
+        System.out.println("\n\n - Escolha um:\n -- Sair (0)\n -- Fila(1)\n -- Pilha(2)");
+        IO.print(" [Type Here ->] ");    choice = cin.nextInt();
 
-    System.out.println("Pessoa na frente da fila: " + Fila_Do_Super.frenteFila() + " || Tamanho da Fila: " + Fila_Do_Super.tamanhoFila());
+        while (choice < -1 || choice > 2) {
+            System.out.println("0 , 1 OU 2 PORRA.");
+            IO.print(" [Type Here ->] ");    choice = cin.nextInt();
+        }
 
-    Fila_Do_Super.listaFila();
+        if (choice == 0) {
+            menu = false;
+            System.out.print("Bye-bye!");
+        }
 
-    System.out.println("Removendo um senhor da fila:");
-    Fila_Do_Super.removerFila();
+       else if (choice == 1) {
 
-    System.out.println("Pessoa na frente da fila: " + Fila_Do_Super.frenteFila() + " || Tamanho da Fila: " + Fila_Do_Super.tamanhoFila());
+            System.out.println("\n[{}] Fila:\n");
 
-    System.out.println("Pessoas na fila:");
-    Fila_Do_Super.listaFila();
-
-    System.out.println("Atendendo alguns clientes:");
-    Fila_Do_Super.atender();
-    Fila_Do_Super.atender();
-    Fila_Do_Super.atender();
-
-    System.out.println("\nClientes atendidos:"); Fila_Do_Super.listaAtendidos();
-    System.out.println("\nClientes restantes:");  Fila_Do_Super.listaFila();
+            System.out.println("Tentando remover uma fila vazia:");
+            if (Fila_Do_Super.removerFila() == null) {
+                System.out.println("Mais vazia q minha alma\n");
+            }
 
 
+            Fila_Do_Super.InserirFila("Obama");
+            Fila_Do_Super.InserirFila("Bob Esponja");
+            Fila_Do_Super.InserirFila("Mãe do Musculoso");
+            Fila_Do_Super.InserirFila("Cebolinha");
+            Fila_Do_Super.InserirFila("Goku");
+            Fila_Do_Super.InserirFila("Minos Prime");
+            Fila_Do_Super.InserirFila("Judas");
+
+            System.out.println("Pessoa na frente da fila: " + Fila_Do_Super.frenteFila() + " || Tamanho da Fila: " + Fila_Do_Super.tamanhoFila());
+
+            Fila_Do_Super.listaFila();
+
+            System.out.println("Removendo um senhor da fila:");
+            Fila_Do_Super.removerFila();
+
+            System.out.println("Pessoa na frente da fila: " + Fila_Do_Super.frenteFila() + " || Tamanho da Fila: " + Fila_Do_Super.tamanhoFila());
+
+            System.out.println("Pessoas na fila:");
+            Fila_Do_Super.listaFila();
+
+            System.out.println("Atendendo alguns clientes:");
+            Fila_Do_Super.atender();
+            Fila_Do_Super.atender();
+            Fila_Do_Super.atender();
+
+            System.out.println("\nClientes atendidos:");
+            Fila_Do_Super.listaAtendidos();
+            System.out.println("\nClientes restantes:");
+            Fila_Do_Super.listaFila();
+
+        }
 /// ____________________________________________________________________________________________________________________
 
-    System.out.println("\n[{}] Pilha:\n");
+    else if (choice == 2) {
+            System.out.println("\n[{}] Pilha:\n");
 
-    System.out.println("Tentando remover uma Pilha vazia:");
-    if (Pilha_de_Manga.desempilhar() == null) {
-        System.out.println("Mais vazia q sua alma\n");
+            System.out.println("Tentando remover uma Pilha vazia:");
+            if (Pilha_de_Manga.desempilhar() == null) {
+                System.out.println("Mais vazia q sua alma\n");
+            }
+
+            Pilha_de_Manga.empilhar("Demon Slayer");
+            Pilha_de_Manga.empilhar("Jujutsu Kaisen");
+            Pilha_de_Manga.empilhar("Kasamoto Days");
+
+
+            System.out.println("Tamanho da Pilha: " + Pilha_de_Manga.getTamanho());
+            System.out.println("Manga no topo da Pilha: " + Pilha_de_Manga.getTopo());
+            System.out.println("Coisas na Pilha:");
+            Pilha_de_Manga.listaPilha();
+
+            Pilha_de_Manga.desempilhar();
+
+            System.out.println("Novo Tamanho da Pilha: " + Pilha_de_Manga.getTamanho());
+            System.out.println("Novo Manga no topo da Pilha: " + Pilha_de_Manga.getTopo());
+            System.out.println("Novas Coisas na Pilha:");
+            Pilha_de_Manga.listaPilha();
+
+        }
     }
-
-    Pilha_de_Manga.empilhar("Demon Slayer");
-    Pilha_de_Manga.empilhar("Jujutsu Kaisen");
-    Pilha_de_Manga.empilhar("Kasamoto Days");
-
-
-    System.out.println("Tamanho da Pilha: " + Pilha_de_Manga.getTamanho());
-    System.out.println("Manga no topo da Pilha: " + Pilha_de_Manga.getTopo());
-    System.out.println("Coisas na Pilha:");
-    Pilha_de_Manga.listaPilha();
-
-    Pilha_de_Manga.desempilhar();
-
-    System.out.println("Novo Tamanho da Pilha: " + Pilha_de_Manga.getTamanho());
-    System.out.println("Novo Manga no topo da Pilha: " + Pilha_de_Manga.getTopo());
-    System.out.println("Novas Coisas na Pilha:");
-    Pilha_de_Manga.listaPilha();
-
 }
 
 public class No<T> {
@@ -202,7 +229,7 @@ public class Fila<T> {
 
             No<T> dado_lista = this.inicio;
             while (dado_lista.getAnterior() != null) {
-                if (dado_lista.isPrivilegiado() == true) { System.out.println(" - " + dado_lista.getDado() + " [Privilegiado]"); }
+                if (dado_lista.isPrivilegiado() == true) { System.out.println(" - " + dado_lista.getDado() + " [Prioritario]"); }
                 else { System.out.println(" - " + dado_lista.getDado()); }
                 dado_lista = dado_lista.getAnterior();
             }
