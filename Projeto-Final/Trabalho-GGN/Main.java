@@ -57,20 +57,9 @@ public class Main {
 
         // Gera alguns clientes e encadeia-os da fila. Senha aleatória e tempo de atendimento aleatório.
         for (int i=0; i<20; i++) {
-            Cliente novoCliente = new Cliente("Cliente " + i, geraSenha(), (int)(2*Math.random())+1);
+            Cliente novoCliente = new Cliente("Cliente " + i, geraSenha(), (int)(Math.random()* (5 - 1)) + 1);
             filaUnica.getFila().inserirFila(novoCliente);
         }
-
-        /*
-        // Ocupa os postos abertos
-        for (int i=0; i < QUANTIDADE_POSTOS_ATENDIMENTO; i++) {
-            if (postosDeAtendimento[i].getEmFuncionamento() == true &&
-                postosDeAtendimento[i].getAtendendoCliente() == false) {
-                    postosDeAtendimento[i].clienteEntra(filaUnica.getFila().removerFila());
-            }
-        }
-             */
-
     }
     
     public void lacoSimulador() {
@@ -81,6 +70,15 @@ public class Main {
 
             decideDesistenciaClientes();
            // decideChegaNovoClienteNaFila()
+
+            processaAtendimentoPostos();
+
+           // metodo chamar clientes n pode funcionar no primeiro turno, para motivos de melhro visualizacao
+            if (turno > 1) { 
+                chamarClientesParaPostosLivres();
+            } else {
+                System.out.println(">> AVISO: Primeiro turno. Os postos aguardarão o próximo turno para iniciar os atendimentos.");
+            }
 
             mostraPostos();
             filaUnica.mostraFilaPrioritaria();
@@ -166,5 +164,55 @@ public class Main {
             filaUnica.removerFilaPrioritaria(c.getSenha().getNumero());
             }
         ); 
+    }
+
+    /** Varre os postos de atendimento procurando postos abertos e livres.
+     * Se encontrar, remove o próximo cliente da frente da fila e o aloca no posto.
+     * A senha do cliente também é empilhada no histórico de senhas chamadas.
+     */
+    public void chamarClientesParaPostosLivres() {
+        
+        if (filaUnica.getFila().filaVazia() == true) {
+            System.out.println(">> AVISO: A fila está vazia. Nenhum cliente para chamar.");
+            return; // Sai do método pois não há ninguém para chamar
+        }
+
+        for (int i = 0; i < QUANTIDADE_POSTOS_ATENDIMENTO; i++) {
+            if (postosDeAtendimento[i].getEmFuncionamento() == true && 
+                postosDeAtendimento[i].getAtendendoCliente() == false) {
+                
+                if (filaUnica.getFila().filaVazia() == false) {
+                    Cliente clienteChamado = filaUnica.getFila().removerFila();
+                    postosDeAtendimento[i].clienteEntra(clienteChamado);
+                    pilhaSenhasChamadas.inserirPilha(clienteChamado.getSenha());
+                    System.out.println(">> ATENDIMENTO: " + clienteChamado.getNome() + " chamado ao Posto " + postosDeAtendimento[i].getNumero() + " (Senha: " + clienteChamado.getSenha() + ")");
+                    return; // Encerra o método após colocar UM cliente. O próximo será chamado apenas no próximo turno.
+                } else {
+                    // Se a fila esvaziar enquanto alocamos clientes nos postos
+                    System.out.println(">> AVISO: A fila esvaziou. Postos restantes aguardarão novos clientes.");
+                    break; // Sai do laço
+                }
+            }
+        }
+    }
+
+    /** Varre os postos de atendimento procurando postos ocupados.
+     * Se encontrar, diminui o tempo de atendimento do cliente em 1 turno.
+     * Se o tempo de atendimento chegar a zero, o cliente é removido do posto.
+     */
+    public void processaAtendimentoPostos() {
+        for (int i = 0; i < QUANTIDADE_POSTOS_ATENDIMENTO; i++) {
+            if (postosDeAtendimento[i].getEmFuncionamento() == true && 
+                postosDeAtendimento[i].getAtendendoCliente() == true) {
+                
+                Cliente clienteNoPosto = postosDeAtendimento[i].getCliente();
+                clienteNoPosto.setTempoAtendimento(clienteNoPosto.getTempoAtendimento() - 1);
+                
+                if (clienteNoPosto.getTempoAtendimento() <= 0) {
+                    postosDeAtendimento[i].clienteSai();
+                    System.out.println(">> ATENDIMENTO CONCLUÍDO: " + clienteNoPosto.getNome() + " concluiu o atendimento e liberou o Posto " + postosDeAtendimento[i].getNumero());
+                }
+            }
+        }
     }
 }

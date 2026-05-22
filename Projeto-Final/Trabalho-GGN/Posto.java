@@ -60,6 +60,7 @@ public class Posto {
     public String clienteSai() {
         String nomeCliente = clienteEmAtendimento.getNome();
         clienteEmAtendimento = null;
+        atendendoCliente = false; //precisa ser false, n null se n da b.o
         return nomeCliente;
     }
 
