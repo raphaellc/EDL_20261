@@ -47,7 +47,7 @@ void main() {
 
 
             while (loop == true) {
-
+                
                 System.out.println("Pessoa na frente da fila: " + Fila_Do_Super.frenteFila() + " || Tamanho da Fila: " + Fila_Do_Super.tamanhoFila());
 
                 Fila_Do_Super.listaFila();
@@ -138,6 +138,7 @@ public class Fila<T> {
     ArrayList<T> Atendidos_Fila = new ArrayList<T>();
     ArrayList<Integer> Senhas_Atendidos = new ArrayList<>();
     Random Gerador_Senha = new Random();
+    Random Privilegiador = new Random();
 
 
     public Fila() {
@@ -153,15 +154,15 @@ public class Fila<T> {
             this.fim = this.inicio;
         }
 
-        else {
-            novoNo.setProximo(this.fim);
-            this.fim.setAnterior(novoNo);
-            this.fim = novoNo;
-        }
+        novoNo.setProximo(this.fim);
+        this.fim.setAnterior(novoNo);
+        this.fim = novoNo;
 
+        int coinflip = Privilegiador.nextInt(3) + 1;
+
+        if (coinflip == 3) { novoNo.setPrivilegiado(true); }
+        else { novoNo.setPrivilegiado(false); }
         tamanho++;
-        if (tamanho%3 == 0) { novoNo.setPrivilegiado(true); }
-
     }
     public T removerFila(){
 
@@ -194,15 +195,29 @@ public class Fila<T> {
 
         No<T> dado_atendimento = this.inicio;
         int num_senha = Gerador_Senha.nextInt(1111 , 9999);
+        int contador = 1;
 
         dado_atendimento.setSenha(num_senha);
 
         if (dado_atendimento.isPrivilegiado() == false) {
             System.out.println(dado_atendimento.getDado() + "   Atendido");
+            contador++;
         }
 
+        else if (dado_atendimento.isPrivilegiado() == false && contador == 3) {
+            while (dado_atendimento.isPrivilegiado() == false && dado_atendimento.getProximo() != null) {
+                dado_atendimento.getProximo();
+            }
+
+            if (dado_atendimento.isPrivilegiado() == true && dado_atendimento.getProximo() == null) {
+                System.out.println(dado_atendimento.getDado() + "   Atendido (Prioritario)");
+            }
+
+            else { return; }
+        }
         else {
             System.out.println(dado_atendimento.getDado() + "   Atendido (Prioritario)");
+            contador = 1;
         }
 
         Atendidos_Fila.add(dado_atendimento.getDado());
