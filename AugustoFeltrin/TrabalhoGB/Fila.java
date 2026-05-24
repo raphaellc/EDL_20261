@@ -42,6 +42,10 @@ public class Fila<T> {
     }
 
     public T frente(){
+        if(estaVazia()){
+            return null;
+        }
+        
         return this.inicio.getDado();
     }
 
