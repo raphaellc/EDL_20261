@@ -25,7 +25,9 @@ public class Main {
     int turno = 0; 
 
     static final int QUANTIDADE_POSTOS_ATENDIMENTO = 5;
-    int quantidadeMinimadePostosFuncionando = 3;
+    static final int TAMANHO_FILA_NECESSARIO_PARA_4_POSTOS = 15;
+    static final int TAMANHO_FILA_NECESSARIO_PARA_5_POSTOS = 25;
+    int quantidadeMinimaDePostosFuncionando = 3;
     Posto postosDeAtendimento[] = new Posto[QUANTIDADE_POSTOS_ATENDIMENTO];
 
     //Fila<Cliente> filaUnica = new Fila<>(); // A debater se usaremos a classe Fila.java ou FilaPrioritaria.java
@@ -60,7 +62,7 @@ public class Main {
         }
 
         // Abre alguns postos
-        for (int i=0; i < quantidadeMinimadePostosFuncionando; i++) {
+        for (int i=0; i < quantidadeMinimaDePostosFuncionando; i++) {
             abrePosto(i);
         }
 
@@ -77,22 +79,25 @@ public class Main {
             turno++;
             System.out.println("Turno atual: " + turno);
 
-            decideDesistenciaClientes();
-           // decideChegaNovoClienteNaFila()
-
+            
             processaAtendimentoPostos();
-
+            
             System.out.println("\n--- Histórico de Atendidos ---");
             historicoAtendidos.mostraPilha();
             System.out.println("\n--- Histórico de Desistentes ---");
             historicoDesistentes.mostraPilha();
-
-           // metodo chamar clientes n pode funcionar no primeiro turno, para motivos de melhro visualizacao
+            
+            // alteraQuantidadeMinimaDePostosFuncionando() // Este método deve ser chamado logo após a conclusão de um atendimento
+            
+            // metodo chamar clientes n pode funcionar no primeiro turno, para motivos de melhro visualizacao
             if (turno > 1) { 
                 chamarClientesParaPostosLivres();
             } else {
                 System.out.println(">> AVISO: Primeiro turno. Os postos aguardarão o próximo turno para iniciar os atendimentos.");
             }
+
+            // decideChegaNovoClienteNaFila()
+            decideDesistenciaClientes(); // Este método deveria ser o último a ser chamado no while()
 
             mostraPostos();
             filaUnica.mostraFilaPrioritaria();
@@ -120,11 +125,21 @@ public class Main {
         }
     }
 
+    /** Abre um posto. Atenção: índice dos postos inicia em 0
+     * @param numeroPostoInformado
+     */
     public void abrePosto(int numeroPostoInformado) {
         postosDeAtendimento[numeroPostoInformado].setEmFuncionamento(true);
     }
 
-    public void fechaPosto() {}
+    /** Fecha um posto. Atenção: índice dos postos inicia em 0.
+     * @return postoAretornar
+     */
+    public Posto fechaPosto(int numeroPostoInformado) {
+        postosDeAtendimento[numeroPostoInformado].setEmFuncionamento(false);
+        Posto postoAretornar = postosDeAtendimento[numeroPostoInformado];
+        return postoAretornar;
+    }
 
     /** Sorteia se um novo cliente vai aparecer na fila segundo uma distribuição de probabilidade. */
     public boolean sorteiaNovoClienteNaFila() {
@@ -208,6 +223,22 @@ public class Main {
                     // Se a fila esvaziar enquanto alocamos clientes nos postos
                     System.out.println(">> AVISO: A fila esvaziou. Postos restantes aguardarão novos clientes.");
                     break; // Sai do laço
+                    /* Questiono a necessidade deste ramo ELSE do IF; entendo que o cliente que é chamado não pode mais sair da fila,
+                    porque quando ele for chamado, ele é removido da fila com este comando:
+                        Cliente clienteChamado = filaUnica.getFila().removerFila();
+                    Quando os desistentes forem sorteados, este cliente já não constará mais na fila e não poderá mais desistir.
+                    E também não importa a ordem em que os métodos aconteçam:
+                        chamarClientesParaPostosLivres()
+                        decideDesistenciaClientes()
+                    ou
+                        decideDesistenciaClientes()
+                        chamarClientesParaPostosLivres()
+                    Ambos métodos removem o cliente da fila. A questão é qual método deve ser chamado primeiro no laço principal
+                    Entendo que seria uma melhor modelagem fazer nesta ordem:
+
+                        chamarClientesParaPostosLivres()
+                        decideDesistenciaClientes()
+                    */
                 }
             }
         }
@@ -228,9 +259,34 @@ public class Main {
                 if (clienteNoPosto.getTempoAtendimento() <= 0) {
                     postosDeAtendimento[i].clienteSai();
                     historicoAtendidos.inserirPilha(clienteNoPosto); // Guarda o cliente atendido no histórico de atendidos
+                    /* É importante que o comando acima aconteça antes deste ponto. Assim que o cliente entra no posto,
+                    sua senha deve imediatamente ir para a pilha de clientes atendidos, ainda que o seu atendimento não tenha concluído.
+                    Desta forma, ficará registrado 'em tempo real' qual tipo de senha foi chamada (N ou P). Isto é necessário para
+                    decidir qual tipo de cliente será o próximo chamado. */
                     System.out.println(">> ATENDIMENTO CONCLUÍDO: " + clienteNoPosto.getNome() + " concluiu o atendimento e liberou o Posto " + postosDeAtendimento[i].getNumero());
                 }
             }
         }
     }
+
+    /** Baseado na inspeção da pilha de clientes atendidos (senhas chamadas), decide se o próximo cliente chamado será N ou P.
+     * A pilha de clientes atendidos deve ser comparada com o critério 2N-1P. if ( (2N e 1P) ou (1P e 2N) ) foram as 3 últimas
+     * chamadas, deve chamar uma senha N ou P conforme a comparação. Este método deve ser chamado dentro do método <b>chamarClientesParaPostosLivres()<b/>
+    */
+    public void decideAtendendimentoNouP() {}
+
+    /** Muda o número de postos funcionando de acordo com o tamanho da fila. O tamanho da fila varia de 0 a infinito.
+     * Os valores TAMANHO_FILA_NECESSARIO_PARA_4_POSTOS e TAMANHO_FILA_NECESSARIO_PARA_5_POSTOS são constantes declaradas
+     * adequadamente no cabeçalho do programa. Esses valores dividem o espaço da fila em intervalos definidos.
+     * Esses intervalos são comparados com o tamanho real da fila para, somente então, tomar-se a decisão de manter, aumentar
+     * ou dimnuir a fila. <b>Este método deve ser chamado imediatamente após a conclusão de um atendimento, evitando que
+     * um cliente seja chamado antes de um posto fechar, havendo esta necessidade.</b>
+     * 
+     * 0 .......... tamanho1 .......... tamanho2 .............. (inf)
+     *   [3 postos]          [4 postos]          [4 postos]
+     */
+    public void alteraQuantidadeMinimaDePostosFuncionando() {}
+
+    /** Decide aleatoriamente se um novo cliente aparecerá no fim da fila. Usar Math.random() para isso. Sugiro usar uma probabilidade de 10% */
+    public void decideChegaNovoClienteNaFila() {}
 }
