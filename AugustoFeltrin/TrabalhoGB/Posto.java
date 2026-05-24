@@ -1,3 +1,5 @@
+//
+
 package AugustoFeltrin.TrabalhoGB;
 
 public class Posto {
