@@ -98,7 +98,7 @@ public class Main {
                 System.out.println(">> AVISO: Primeiro turno. Os postos aguardarão o próximo turno para iniciar os atendimentos.");
             }
 
-            decideChegaNovoClienteNaFila()
+            decideChegaNovoClienteNaFila();
             decideDesistenciaClientes(); // Este método deveria ser o último a ser chamado no while()
 
             mostraPostos();
@@ -215,33 +215,11 @@ public class Main {
             if (postosDeAtendimento[i].getEmFuncionamento() == true && 
                 postosDeAtendimento[i].getAtendendoCliente() == false) {
                 
-                if (filaUnica.getFila().filaVazia() == false) {
-                    Cliente clienteChamado = filaUnica.getFila().removerFila();
-                    postosDeAtendimento[i].clienteEntra(clienteChamado);
-                    pilhaSenhasChamadas.inserirPilha(clienteChamado.getSenha());
-                    System.out.println(">> ATENDIMENTO: " + clienteChamado.getNome() + " chamado ao Posto " + postosDeAtendimento[i].getNumero() + " (Senha: " + clienteChamado.getSenha() + ")");
-                    return; // Encerra o método após colocar UM cliente. O próximo será chamado apenas no próximo turno.
-                } else {
-                    // Se a fila esvaziar enquanto alocamos clientes nos postos
-                    System.out.println(">> AVISO: A fila esvaziou. Postos restantes aguardarão novos clientes.");
-                    break; // Sai do laço
-                    /* Questiono a necessidade deste ramo ELSE do IF; entendo que o cliente que é chamado não pode mais sair da fila,
-                    porque quando ele for chamado, ele é removido da fila com este comando:
-                        Cliente clienteChamado = filaUnica.getFila().removerFila();
-                    Quando os desistentes forem sorteados, este cliente já não constará mais na fila e não poderá mais desistir.
-                    E também não importa a ordem em que os métodos aconteçam:
-                        chamarClientesParaPostosLivres()
-                        decideDesistenciaClientes()
-                    ou
-                        decideDesistenciaClientes()
-                        chamarClientesParaPostosLivres()
-                    Ambos métodos removem o cliente da fila. A questão é qual método deve ser chamado primeiro no laço principal
-                    Entendo que seria uma melhor modelagem fazer nesta ordem:
-
-                        chamarClientesParaPostosLivres()
-                        decideDesistenciaClientes()
-                    */
-                }
+                Cliente clienteChamado = filaUnica.getFila().removerFila();
+                postosDeAtendimento[i].clienteEntra(clienteChamado);
+                pilhaSenhasChamadas.inserirPilha(clienteChamado.getSenha());
+                System.out.println(">> ATENDIMENTO: " + clienteChamado.getNome() + " chamado ao Posto " + postosDeAtendimento[i].getNumero() + " (Senha: " + clienteChamado.getSenha() + ")");
+                return; 
             }
         }
     }
@@ -258,13 +236,10 @@ public class Main {
                 Cliente clienteNoPosto = postosDeAtendimento[i].getCliente();
                 clienteNoPosto.setTempoAtendimento(clienteNoPosto.getTempoAtendimento() - 1);
                 
+                historicoAtendidos.inserirPilha(clienteNoPosto); // Guarda o cliente no histórico de atendidos, mesmo que o atendimento ainda não tenha sido concluído. 
+
                 if (clienteNoPosto.getTempoAtendimento() <= 0) {
                     postosDeAtendimento[i].clienteSai();
-                    historicoAtendidos.inserirPilha(clienteNoPosto); // Guarda o cliente atendido no histórico de atendidos
-                    /* É importante que o comando acima aconteça antes deste ponto. Assim que o cliente entra no posto,
-                    sua senha deve imediatamente ir para a pilha de clientes atendidos, ainda que o seu atendimento não tenha concluído.
-                    Desta forma, ficará registrado 'em tempo real' qual tipo de senha foi chamada (N ou P). Isto é necessário para
-                    decidir qual tipo de cliente será o próximo chamado. */
                     System.out.println(">> ATENDIMENTO CONCLUÍDO: " + clienteNoPosto.getNome() + " concluiu o atendimento e liberou o Posto " + postosDeAtendimento[i].getNumero());
                 }
             }
