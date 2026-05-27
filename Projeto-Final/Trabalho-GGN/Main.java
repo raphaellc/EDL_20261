@@ -33,7 +33,8 @@ public class Main {
     //Fila<Cliente> filaUnica = new Fila<>(); // A debater se usaremos a classe Fila.java ou FilaPrioritaria.java // vamos usar FilaPrioritaria pois ja está aqui #remoção
     FilaPrioritaria<Cliente> filaUnica = new FilaPrioritaria<>();
 
-    int NumeradorDeSenhas = (int)(50*Math.random()); // inicia a numeração de senhas em um número aleatório inicial
+    int numeradorDeSenhas = (int)(50*Math.random()); // inicia a numeração de senhas em um número aleatório inicial
+    int totalDeClientes = 0; // Guarda o numero total de clientes durante a execução da simulacão
     Pilha<Senha> pilhaSenhasChamadas = new Pilha<>();
     
     Pilha<Cliente> historicoDesistentes = new Pilha<>();
@@ -68,8 +69,9 @@ public class Main {
 
         // Gera alguns clientes e encadeia-os na fila. Senha aleatória e tempo de atendimento aleatório.
         for (int i=0; i<20; i++) {
-            Cliente novoCliente = new Cliente("Cliente " + i, geraSenha(), (int)(Math.random()* 4) + 1);
+            Cliente novoCliente = new Cliente("Cliente " + totalDeClientes, geraSenha(), (int)(Math.random()* 4) + 1);
             filaUnica.getFila().inserirFila(novoCliente);
+            totalDeClientes++;
         }
     }
     
@@ -87,16 +89,16 @@ public class Main {
             System.out.println("\n--- Histórico de Desistentes ---");
             historicoDesistentes.mostraPilha();
             
-            // alteraQuantidadeMinimaDePostosFuncionando() // Este método deve ser chamado logo após a conclusão de um atendimento
+            alteraQuantidadeMinimaDePostosFuncionando(); // Este método deve ser chamado logo após a conclusão de um atendimento
             
-            // metodo chamar clientes n pode funcionar no primeiro turno, para motivos de melhro visualizacao
+            // metodo chamar clientes n pode funcionar no primeiro turno, para motivos de melhor visualização
             if (turno > 1) { 
                 chamarClientesParaPostosLivres();
             } else {
                 System.out.println(">> AVISO: Primeiro turno. Os postos aguardarão o próximo turno para iniciar os atendimentos.");
             }
 
-            // decideChegaNovoClienteNaFila()
+            decideChegaNovoClienteNaFila()
             decideDesistenciaClientes(); // Este método deveria ser o último a ser chamado no while()
 
             mostraPostos();
@@ -116,7 +118,7 @@ public class Main {
     }
 
     public Senha geraSenha() {
-        return new Senha(caraOuCoroa(), ++NumeradorDeSenhas);
+        return new Senha(caraOuCoroa(), ++numeradorDeSenhas);
     }
 
     public void mostraPostos() {
@@ -302,6 +304,12 @@ public class Main {
         }
     }
 
-    /** Decide aleatoriamente se um novo cliente aparecerá no fim da fila. Usar Math.random() para isso. Sugiro usar uma probabilidade de 10% */
-    public void decideChegaNovoClienteNaFila() {}
+    /** Decide aleatoriamente se um novo cliente aparecerá no fim da fila. Probabilidade de 10% */
+    public void decideChegaNovoClienteNaFila() {
+        if (Math.random() <= 0.1){
+            Cliente novoCliente = new Cliente("Cliente " + totalDeClientes, geraSenha(), (int)(Math.random()* 4) + 1);
+            filaUnica.getFila().inserirFila(novoCliente);
+            totalDeClientes++;
+        }
+    }
 }
