@@ -114,10 +114,6 @@ public class Fila<T> {
         return fim.getDado();
     }
 
-    public int tamanhoFila() {
-        return tamanho;
-    }
-
     public boolean filaVazia() {
         return (tamanho <= 0);
     }

@@ -30,7 +30,7 @@ public class Main {
     int quantidadeMinimaDePostosFuncionando = 3;
     Posto postosDeAtendimento[] = new Posto[QUANTIDADE_POSTOS_ATENDIMENTO];
 
-    //Fila<Cliente> filaUnica = new Fila<>(); // A debater se usaremos a classe Fila.java ou FilaPrioritaria.java
+    //Fila<Cliente> filaUnica = new Fila<>(); // A debater se usaremos a classe Fila.java ou FilaPrioritaria.java // vamos usar FilaPrioritaria pois ja está aqui #remoção
     FilaPrioritaria<Cliente> filaUnica = new FilaPrioritaria<>();
 
     int NumeradorDeSenhas = (int)(50*Math.random()); // inicia a numeração de senhas em um número aleatório inicial
@@ -66,7 +66,7 @@ public class Main {
             abrePosto(i);
         }
 
-        // Gera alguns clientes e encadeia-os da fila. Senha aleatória e tempo de atendimento aleatório.
+        // Gera alguns clientes e encadeia-os na fila. Senha aleatória e tempo de atendimento aleatório.
         for (int i=0; i<20; i++) {
             Cliente novoCliente = new Cliente("Cliente " + i, geraSenha(), (int)(Math.random()* 4) + 1);
             filaUnica.getFila().inserirFila(novoCliente);
@@ -285,7 +285,22 @@ public class Main {
      * 0 .......... tamanho1 .......... tamanho2 .............. (inf)
      *   [3 postos]          [4 postos]          [4 postos]
      */
-    public void alteraQuantidadeMinimaDePostosFuncionando() {}
+    public void alteraQuantidadeMinimaDePostosFuncionando() {
+        if (filaUnica.getFila().getTamanho() >= TAMANHO_FILA_NECESSARIO_PARA_4_POSTOS) {
+            postosDeAtendimento[3].setEmFuncionamento(true);
+
+            if (filaUnica.getFila().getTamanho() >= TAMANHO_FILA_NECESSARIO_PARA_5_POSTOS) {
+                postosDeAtendimento[4].setEmFuncionamento(true);
+            }
+            else {
+                 postosDeAtendimento[4].setEmFuncionamento(false);
+            }
+        }
+        else { // garante que ambas os postos estejam fechados caso a fila seja muito pequena, evitando que o 5 esteja aberto e o 4 esteja fechado
+            postosDeAtendimento[3].setEmFuncionamento(false);
+            postosDeAtendimento[4].setEmFuncionamento(false);
+        }
+    }
 
     /** Decide aleatoriamente se um novo cliente aparecerá no fim da fila. Usar Math.random() para isso. Sugiro usar uma probabilidade de 10% */
     public void decideChegaNovoClienteNaFila() {}
