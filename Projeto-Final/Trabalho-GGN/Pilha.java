@@ -37,6 +37,17 @@ public class Pilha<T> {
         tamanho = 1;
     }
 
+    // GETTER-SETTER
+
+    public No<T> getTopo() {
+        if (pilhaVazia() == true) return null;
+        return topo;
+    }
+
+    public int getTamanho() {
+        return tamanho;
+    }
+
     /** Insere um nó com um dado na Pilha.
     * @param dado
     */
@@ -91,14 +102,7 @@ public class Pilha<T> {
         return valorAretornar;
     }
 
-    public T topoPilha() {
-        if (pilhaVazia() == true) return null;
-        return topo.getDado();
-    }
 
-    public int tamanhoPilha() {
-        return tamanho;
-    }
 
     public boolean pilhaVazia() {
         return (tamanho <= 0);

@@ -38,13 +38,15 @@ public class FilaPrioritaria<T> {
             return;
         }
 
-		No<Cliente> noAuxiliar = fila.getInicio(); // precisa de getter
+		No<Cliente> noAuxiliar = fila.getInicio();
         System.out.println("");
         while (noAuxiliar.getProximo() != null) {
 			System.out.print(mostraClienteCompleto(noAuxiliar.getDado()));
+			//System.out.println("\tCliente proximo = " + noAuxiliar.getProximo());
             noAuxiliar = noAuxiliar.getProximo();
         }
 		System.out.print(mostraClienteCompleto(noAuxiliar.getDado())); // mostra o dado do último nó
+		//System.out.println("\tCliente anterior ao ultimo = " + noAuxiliar.getAnterior());
 	}
 
 	/** Remove um nó da fila através do número de sua senha. Este método é baseado no método removerFila()
@@ -94,9 +96,10 @@ public class FilaPrioritaria<T> {
 				// ... <-> C <-> D -> null
 				else if (noAuxiliar.getProximo() == null) {
 					clienteAretornar = noAuxiliar.getDado();
-					noAuxiliar.getAnterior().setProximo(null);  // remove C -> D
+					fila.setFim(noAuxiliar.getAnterior());      // fim = C
+					fila.getFim().setProximo(null);	            // remove C -> D
+					//noAuxiliar.getAnterior().setProximo(null);  // remove C -> D
 					noAuxiliar.setAnterior(null);               // remove C <- D
-					// avaliar se precisa informar o fim de novo
 					
 				// caso nó qualquer no meio da fila
 				// noAuxiliar = B. Remover o nó B de

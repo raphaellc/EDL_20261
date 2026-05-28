@@ -3,7 +3,7 @@ public class Cliente {
     private String nome;
     private Senha senhaCliente = new Senha();
     private int tempoAtendimento = 1;
-    private double probabilidadeDesistencia = 0.1;
+    private double probabilidadeDesistencia = 0.02;
 
     /// CONSTRUTORES
     /** Construtor mínimo para um cliente. Informe apenas o nome.
