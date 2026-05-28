@@ -29,7 +29,7 @@ public class Main {
     int quantidadeMinimaDePostosFuncionando = 3;
     Posto postosDeAtendimento[] = new Posto[QUANTIDADE_POSTOS_ATENDIMENTO];
 
-    //Fila<Cliente> filaUnica = new Fila<>(); // A debater se usaremos a classe Fila.java ou FilaPrioritaria.java // vamos usar FilaPrioritaria pois ja está aqui #remoção
+    //Fila<Cliente> filaUnica = new Fila<>();
     FilaPrioritaria<Cliente> filaUnica = new FilaPrioritaria<>();
 
     int numeradorDeSenhas = (int)(50*Math.random()); // inicia a numeração de senhas em um número aleatório inicial
