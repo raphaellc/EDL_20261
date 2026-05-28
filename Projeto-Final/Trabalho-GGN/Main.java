@@ -235,19 +235,24 @@ public class Main {
                 Cliente clienteAchamar;
 
                 if (decideSeSelecionaSenhaNouP() == false) {
-                    clienteAchamar = filaUnica.getFila().removerFila();
+                    clienteAchamar = chamaProximoClienteFila();
                     postosDeAtendimento[i].clienteEntra(clienteAchamar);
                     pilhaSenhasChamadas.inserirPilha(clienteAchamar.getSenha());
                     historicoAtendidos.inserirPilha(clienteAchamar);
-                        /* Guarda o cliente no histórico de atendidos, mesmo que o atendimento ainda não tenha sido concluído. 
+                        /* Guarda o cliente no histórico de atendidos, mesmo que o atendimento ainda não tenha sido concluído. O mesma para a senha.
                         Na verdade, a ideia aqui não é um histórico de atendidos, mas sim um histórico de clientes chamados */
                     System.out.println("\n\t>> ATENDIMENTO: " + clienteAchamar.getNome() + " chamado ao Posto " + postosDeAtendimento[i].getNumero() + " (Senha: " + clienteAchamar.getSenha() + ")");
                     return; 
+
                 } else {
+
                     No<Cliente> noAuxiliar = filaUnica.getFila().getInicio();
-                    clienteAchamar = noAuxiliar.getDado();
+                    //clienteAchamar = noAuxiliar.getDado();
+                    
                     // percorre a fila em busca de cliente que satisfaça a condição de seleção "P ou N"
-                    while (clienteAchamar != null) {                        
+                    while (noAuxiliar != null) {
+                        clienteAchamar = noAuxiliar.getDado();
+
                         if (clienteAchamar.getSenha().getPrioridade() == decideSenhaPouN()) {
                             filaUnica.removerFilaPrioritaria(clienteAchamar.getSenha().getNumero());
                             postosDeAtendimento[i].clienteEntra(clienteAchamar);
@@ -256,10 +261,11 @@ public class Main {
                             System.out.println("\n\t>> ATENDIMENTO: " + clienteAchamar.getNome() + " chamado ao Posto " + postosDeAtendimento[i].getNumero() + " (Senha: " + clienteAchamar.getSenha() + ")");
                             return; 
                         }
-                        clienteAchamar = noAuxiliar.getProximo().getDado();
+                        noAuxiliar = noAuxiliar.getProximo();
                     }
+
                     System.out.println("\n\t>> AVISO: nenhum cliente satisfaz a condição de prioridade. Chamando o primeiro da fila...");
-                    clienteAchamar = filaUnica.getFila().removerFila();
+                    clienteAchamar = chamaProximoClienteFila();
                     postosDeAtendimento[i].clienteEntra(clienteAchamar);
                     pilhaSenhasChamadas.inserirPilha(clienteAchamar.getSenha());
                     historicoAtendidos.inserirPilha(clienteAchamar);
@@ -272,7 +278,10 @@ public class Main {
         }
     }
 
-    public void chamaProximoClienteFila() {}
+    /** Apenas retorna o próximo cliente da fila, desconsiderando sua categoria (P ou N) */
+    public Cliente chamaProximoClienteFila() {
+        return filaUnica.getFila().removerFila();
+    }
 
     /** Varre os postos de atendimento procurando postos ocupados.
      * Se encontrar, diminui o tempo de atendimento do cliente em 1 turno.
@@ -294,18 +303,20 @@ public class Main {
         }
     }
 
-    /** Verifica se o tamanho da fila é, no mínimo, igual a 3 pessoas. Se o for, chama os clientes na fila sem triagem de senha, pois não será necessário:
-     * há postos abertos para todos os clientes. Retorna "true" para triar (tamanho > 3) ou "false" para ignorar triagem (tamanho <= 3).
-     * Este método deve ser chamado dentro do método <b>chamarClientesParaPostosLivres()<b/>.
+    /** Verifica se ao menos 3 clientes estão em atendimento. Se sim, suas senhas já foram empilhadas na pilha de senhas.
+     * Deve-se chamar os próximoas clientes da fila com triagem de senha. Caso contrário, o primeiro cliente da fila será chamado
+     * sem necessidade de triagem. Retorna <b>true</b> para triar (tamanho da pilha de senhas > 3) ou <b>false</b> para ignorar triagem (tamanho <= 3).
+     * Este método deve ser chamado dentro do método <b>chamarClientesParaPostosLivres()<b/>. Este método se aplica principalmente para
+     * a situação inicial da fila, quando ainda nenhum cliente foi atendido.
      */
     public boolean decideSeSelecionaSenhaNouP() {
-        if (filaUnica.getFila().getTamanho() <= 3) { // || pilhaSenhasChamadas.getTamanho() <=3) {
+        if (pilhaSenhasChamadas.getTamanho() <=3) { // significa que 3 ou menos clientes estão em atendimento, e ninguém antes deles foi atendido. 
             return false;
         } else return true;
     }
 
      /** Baseado na inspeção da pilha de clientes atendidos (senhas chamadas), decide se o próximo cliente chamado será N ou P.
-     * A pilha de clientes atendidos deve ser comparada com o critério 2N-1P, ou seja, P é chamado após 2N, e N é chamado após P ou P seguindo de N.
+     * A pilha de clientes atendidos deve ser comparada com o critério 2N-1P, ou seja, P é chamado após 2N, e N é chamado após P, ou P seguindo de N.
      * Retorna "true" para selecionar senha P, ou "false" para selecionar senha N.
      * @return serPrioritaria
     */
