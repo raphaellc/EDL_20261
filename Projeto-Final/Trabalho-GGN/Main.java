@@ -18,18 +18,16 @@ import java.util.ArrayList;
 public class Main {
 
     Scanner inputUsuario = new Scanner(System.in);
-
     int turno = 0; 
 
     static final int QUANTIDADE_POSTOS_ATENDIMENTO = 5;
     static final int TAMANHO_FILA_NECESSARIO_PARA_4_POSTOS = 15;
     static final int TAMANHO_FILA_NECESSARIO_PARA_5_POSTOS = 20;
     static final int numeroInicialDeClientes = 10;
-    static final double probabilidadeNovoClienteNaFila = 0.5;
+    static final double probabilidadeNovoClienteNaFila = 0.9;
     int quantidadeMinimaDePostosFuncionando = 3;
     Posto postosDeAtendimento[] = new Posto[QUANTIDADE_POSTOS_ATENDIMENTO];
 
-    //Fila<Cliente> filaUnica = new Fila<>();
     FilaPrioritaria<Cliente> filaUnica = new FilaPrioritaria<>();
 
     int numeradorDeSenhas = (int)(50*Math.random()); // inicia a numeração de senhas em um número aleatório inicial
@@ -116,6 +114,9 @@ public class Main {
             pilhaSenhasChamadas.mostraPilha();
 
             mostraClienteChamadoPorUltimo(postoQueChamouClientePorUltimo);
+            System.out.println("Tamanho da fila: " + filaUnica.getFila().getTamanho());
+
+            mostraTipoProximaSenha();
 
             System.out.println("\n(Enter para o próximo turno; 0 para sair)");
             x = inputUsuario.nextLine();
@@ -136,7 +137,11 @@ public class Main {
      * <b>numeradorDeSenhas++</b> para que o incremento se dê ANTES da linha ser executada.
      */
     public Senha geraSenha() {
-        return new Senha(caraOuCoroa(), ++numeradorDeSenhas);
+        //return new Senha(caraOuCoroa(), ++numeradorDeSenhas);
+        double x = 0.25;
+        if (Math.random() < x) {return new Senha(true, ++numeradorDeSenhas);}
+        else return new Senha(false, ++numeradorDeSenhas);
+        //return new Senha(caraOuCoroa(), ++numeradorDeSenhas);
     }
 
     /** Gera um tempo de atendimento aleatório segundo a fórmula empregada no método. */
@@ -405,6 +410,18 @@ public class Main {
                             + postoQueChamouCliente.getCliente().getNome()
                             + " chamado ao Posto nº"
                             + postoQueChamouCliente.getNumero());
+    }
+
+    public void mostraTipoProximaSenha() {
+        if (decideSeSelecionaSenhaNouP() == true) {
+            if (decideSenhaPouN() == true) {
+                System.out.println("Próxima senha é P.");
+            } else {            
+                System.out.println("Próxima senha é N.");
+            }
+        } else {
+            System.out.println("O primeiro da fila é o próximo.");
+        }
     }
 
     /** Limpa o terminal. Usado a cada novo turno. Pode depender de sistema operacional. Talvez não funcione em Windows.
