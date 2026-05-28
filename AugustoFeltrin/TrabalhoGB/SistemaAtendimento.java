@@ -131,7 +131,7 @@ public class SistemaAtendimento {
             }
         }
     }
-    public void simularDesitencia(){
+    public void simularDesistencia(){
         if(!filaNormal.estaVazia()){
             Senha senha = filaNormal.desenfileirar();
             totalDesistencias++;            
@@ -155,9 +155,11 @@ public class SistemaAtendimento {
             System.out.println("\n========= ITERAÇÃO " + i + " =========");
             
             int novaSenhas = random.nextInt(6) + 1;
-            int tipoSenha = random.nextInt(100);
 
             for(int j = 0; j < novaSenhas; j++){
+
+                int tipoSenha = random.nextInt(100);
+                
                 if(tipoSenha < 60){
                     gerarSenhaNormal();
                 } else {
@@ -165,8 +167,8 @@ public class SistemaAtendimento {
                 }
             }
         
-            if(random.nextInt(100) < 20){
-                simularDesitencia();
+            if(random.nextInt(100) < 35){
+                simularDesistencia();
             }
             atenderProximaSenha();
             mostrarStatus();
