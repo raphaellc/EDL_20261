@@ -101,11 +101,16 @@ public class Main {
             mostraPostos();
             filaUnica.mostraFilaPrioritaria();
 
+            System.out.println("\n\nSenhas chamadas: ");
+            pilhaSenhasChamadas.mostraPilha();
+
             // Talvez melhor só mostrar as pilhas ao sair da simulação. Passar para método main()
+            /*
             System.out.println("\n--- Histórico de Atendidos ---");
             historicoAtendidos.mostraPilha();
             System.out.println("\n--- Histórico de Desistentes ---");
             historicoDesistentes.mostraPilha();
+            */
 
             System.out.println("\n(Enter para o próximo turno; 0 para sair)");
             String x = inputUsuario.nextLine();
@@ -234,8 +239,13 @@ public class Main {
 
                 Cliente clienteAchamar;
 
+                System.out.println("triando senha? = " + decideSeSelecionaSenhaNouP());
+
                 if (decideSeSelecionaSenhaNouP() == false) {
                     clienteAchamar = chamaProximoClienteFila();
+
+                    System.out.println("\t\tclienteAchamar = " + clienteAchamar);
+
                     postosDeAtendimento[i].clienteEntra(clienteAchamar);
                     pilhaSenhasChamadas.inserirPilha(clienteAchamar.getSenha());
                     historicoAtendidos.inserirPilha(clienteAchamar);
@@ -254,6 +264,10 @@ public class Main {
                         clienteAchamar = noAuxiliar.getDado();
 
                         if (clienteAchamar.getSenha().getPrioridade() == decideSenhaPouN()) {
+
+                            System.out.println("\t\tclienteAchamar = " + clienteAchamar);
+                            System.out.println("\t\tsenha =          " + clienteAchamar.getSenha());
+
                             filaUnica.removerFilaPrioritaria(clienteAchamar.getSenha().getNumero());
                             postosDeAtendimento[i].clienteEntra(clienteAchamar);
                             pilhaSenhasChamadas.inserirPilha(clienteAchamar.getSenha());
@@ -266,6 +280,9 @@ public class Main {
 
                     System.out.println("\n\t>> AVISO: nenhum cliente satisfaz a condição de prioridade. Chamando o primeiro da fila...");
                     clienteAchamar = chamaProximoClienteFila();
+
+                    System.out.println("\t\tclienteAchamar = " + clienteAchamar);
+
                     postosDeAtendimento[i].clienteEntra(clienteAchamar);
                     pilhaSenhasChamadas.inserirPilha(clienteAchamar.getSenha());
                     historicoAtendidos.inserirPilha(clienteAchamar);
@@ -304,13 +321,13 @@ public class Main {
     }
 
     /** Verifica se ao menos 3 clientes estão em atendimento. Se sim, suas senhas já foram empilhadas na pilha de senhas.
-     * Deve-se chamar os próximoas clientes da fila com triagem de senha. Caso contrário, o primeiro cliente da fila será chamado
+     * Deve-se chamar os próximos clientes da fila com triagem de senha. Caso contrário, o primeiro cliente da fila será chamado
      * sem necessidade de triagem. Retorna <b>true</b> para triar (tamanho da pilha de senhas > 3) ou <b>false</b> para ignorar triagem (tamanho <= 3).
-     * Este método deve ser chamado dentro do método <b>chamarClientesParaPostosLivres()<b/>. Este método se aplica principalmente para
+     * Este método deve ser chamado dentro do método <b>chamarClientesParaPostosLivres()</b>. Este método se aplica principalmente para
      * a situação inicial da fila, quando ainda nenhum cliente foi atendido.
      */
     public boolean decideSeSelecionaSenhaNouP() {
-        if (pilhaSenhasChamadas.getTamanho() <=3) { // significa que 3 ou menos clientes estão em atendimento, e ninguém antes deles foi atendido. 
+        if (pilhaSenhasChamadas.getTamanho() < 3) { // significa que 2 ou menos clientes estão em atendimento, e ninguém antes deles foi atendido. 
             return false;
         } else return true;
     }
@@ -323,15 +340,19 @@ public class Main {
     public boolean decideSenhaPouN() {
         
         // Se a pilha de chamadas não tiver ao menos 3 senhas, escolhe qualquer senha.
+        /*
         if (pilhaSenhasChamadas.getTopo() == null ||
             pilhaSenhasChamadas.getTopo().getProximo() == null ||
             pilhaSenhasChamadas.getTopo().getProximo().getProximo() == null) {
             
             return caraOuCoroa(); 
         }
+        */
 
         Senha ultimaSenhaChamada = pilhaSenhasChamadas.getTopo().getDado();
-        Senha penultimaSenhaChamada = pilhaSenhasChamadas.getTopo().getProximo().getDado();
+        //System.out.println(ultimaSenhaChamada);
+        Senha penultimaSenhaChamada = pilhaSenhasChamadas.getTopo().getAnterior().getDado();
+        //System.out.println(penultimaSenhaChamada);
 
         if (ultimaSenhaChamada.getPrioridade() == true) {
             return false; // último foi P; chamar senha N
