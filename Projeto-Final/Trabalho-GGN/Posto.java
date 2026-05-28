@@ -5,10 +5,6 @@ public class Posto {
     private boolean atendendoCliente;
     private Cliente clienteEmAtendimento;
 
-    
-
-    // TODO reavaliar a necessidade de haver 2 booleanos aqui: pode gerar situação inusitada em que o posto esteja fechado E com cliente
-
     /// CONSTRUTOR
     /** Informe o número do posto, se está aberto, se está atendendo cliente e o nome do cliente.
      * @param numeroInformado

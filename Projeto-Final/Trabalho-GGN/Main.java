@@ -23,9 +23,9 @@ public class Main {
 
     static final int QUANTIDADE_POSTOS_ATENDIMENTO = 5;
     static final int TAMANHO_FILA_NECESSARIO_PARA_4_POSTOS = 15;
-    static final int TAMANHO_FILA_NECESSARIO_PARA_5_POSTOS = 25;
+    static final int TAMANHO_FILA_NECESSARIO_PARA_5_POSTOS = 20;
     static final int numeroInicialDeClientes = 10;
-    static final double probabilidadeNovoClienteNaFila = 0.75;
+    static final double probabilidadeNovoClienteNaFila = 0.5;
     int quantidadeMinimaDePostosFuncionando = 3;
     Posto postosDeAtendimento[] = new Posto[QUANTIDADE_POSTOS_ATENDIMENTO];
 
@@ -33,11 +33,14 @@ public class Main {
     FilaPrioritaria<Cliente> filaUnica = new FilaPrioritaria<>();
 
     int numeradorDeSenhas = (int)(50*Math.random()); // inicia a numeração de senhas em um número aleatório inicial
-    int totalDeClientes = 0; // Guarda o numero total de clientes durante a execução da simulacão
     Pilha<Senha> pilhaSenhasChamadas = new Pilha<>();
+
+    int totalDeClientes = 0; // Guarda o numero total de clientes durante a execução da simulacão
     
     Pilha<Cliente> historicoDesistentes = new Pilha<>();
     Pilha<Cliente> historicoAtendidos = new Pilha<>();
+
+    Posto postoQueChamouClientePorUltimo; // Útil para melhor mostrar o posto e o cliente chamado para atendimento neste mesmo posto
 
     public static void main(String[] args) {
         
@@ -49,8 +52,10 @@ public class Main {
         System.out.println("\nVocê saiu do simulador de fila de banco Praxedes.");
         
         System.out.println("\n--- RELATÓRIO FINAL ---");
+        
         System.out.println("Clientes Atendidos:");
         BancoPraxedes.historicoAtendidos.mostraPilha();
+
         System.out.println("\nClientes Desistentes:");
         BancoPraxedes.historicoDesistentes.mostraPilha();
     }
@@ -72,9 +77,21 @@ public class Main {
             filaUnica.getFila().inserirFila(novoCliente);
             totalDeClientes++;
         }
+
     }
     
     public void lacoSimulador() {
+
+        System.out.println("\n\n\nTurno atual: " + turno);
+        
+        mostraPostos();
+        filaUnica.mostraFilaPrioritaria();
+
+        System.out.println("\n\t>> Aguardando turno 1 para iniciar a simulação...");
+
+        System.out.println("\n(Enter para o próximo turno; 0 para sair)");
+        String x = inputUsuario.nextLine();
+        if ("0".equals(x) == true) return;
 
         while(true) {
 
@@ -84,18 +101,12 @@ public class Main {
             
             processaAtendimentoPostos();
 
-            // decideQuantidadeMinimaDePostosFuncionando();
             alteraQuantidadeMinimaDePostosFuncionando(); // Este método deve ser chamado logo após a conclusão de um atendimento
             
-            // Este comando poderia ser transferido para o método inicializar()
-            // metodo chamar clientes n pode funcionar no primeiro turno, para motivos de melhor visualização
-            if (turno > 1) { 
-                chamarClientesParaPostosLivres();
-            } else {
-                System.out.println("\n\t>> AVISO: Primeiro turno. Os postos aguardarão o próximo turno para iniciar os atendimentos.");
-            }
+            chamarClientesParaPostosLivres();
 
             decideDesistenciaClientes();
+
             decideChegaNovoClienteNaFila(); // Isto evitará que um cliente recém chegado na fila desista.
 
             mostraPostos();
@@ -104,21 +115,16 @@ public class Main {
             System.out.println("\n\nSenhas chamadas: ");
             pilhaSenhasChamadas.mostraPilha();
 
-            // Talvez melhor só mostrar as pilhas ao sair da simulação. Passar para método main()
-            /*
-            System.out.println("\n--- Histórico de Atendidos ---");
-            historicoAtendidos.mostraPilha();
-            System.out.println("\n--- Histórico de Desistentes ---");
-            historicoDesistentes.mostraPilha();
-            */
+            mostraClienteChamadoPorUltimo(postoQueChamouClientePorUltimo);
 
             System.out.println("\n(Enter para o próximo turno; 0 para sair)");
-            String x = inputUsuario.nextLine();
+            x = inputUsuario.nextLine();
             if ("0".equals(x) == true) return;
+
         }
     }
 
-    /** Retorna 'true' ou 'falso' com aproximadamente 50% de chance cada.
+    /** Retorna 'true' ou 'false' com aproximadamente 50% de chance cada.
      * @return boolean
      */
     public boolean caraOuCoroa() {
@@ -142,6 +148,8 @@ public class Main {
      * @see método <b>toString()</b> em <b>Posto.java</b> para entender como isso é feito.
      */
     public void mostraPostos() {
+        System.out.println("");
+		System.out.println("POSTOS =================");
         for (int i=0; i < QUANTIDADE_POSTOS_ATENDIMENTO; i++) {
             System.out.println(postosDeAtendimento[i]);
         }
@@ -223,13 +231,14 @@ public class Main {
     }
 
     /** Varre os postos de atendimento procurando postos abertos e livres.
-     * Se encontrar, remove o próximo cliente da frente da fila e aloca-o no posto.
-     * A senha do cliente também é empilhada no histórico de senhas chamadas.
+     * Se encontrar, procede para a seleção do próximo atendimento baseado no tipo de senha.
+     * Quando ninguém foi atendido ainda, o critério é ignorado e os clientes são atendidos por ordem de chegada.
+     * Depois disso, o critério de seleção passa a valer. A senha do cliente também é empilhada no histórico de senhas chamadas.
      */
     public void chamarClientesParaPostosLivres() {
         
         if (filaUnica.getFila().filaVazia() == true) {
-            System.out.println("\n\t>> AVISO: A fila está vazia. Nenhum cliente para chamar.");
+            //System.out.println("\n\t>> AVISO: A fila está vazia. Nenhum cliente para chamar.");
             return; // Sai do método pois não há ninguém para chamar
         }
 
@@ -239,25 +248,20 @@ public class Main {
 
                 Cliente clienteAchamar;
 
-                System.out.println("triando senha? = " + decideSeSelecionaSenhaNouP());
-
                 if (decideSeSelecionaSenhaNouP() == false) {
                     clienteAchamar = chamaProximoClienteFila();
-
-                    System.out.println("\t\tclienteAchamar = " + clienteAchamar);
-
                     postosDeAtendimento[i].clienteEntra(clienteAchamar);
                     pilhaSenhasChamadas.inserirPilha(clienteAchamar.getSenha());
                     historicoAtendidos.inserirPilha(clienteAchamar);
                         /* Guarda o cliente no histórico de atendidos, mesmo que o atendimento ainda não tenha sido concluído. O mesma para a senha.
                         Na verdade, a ideia aqui não é um histórico de atendidos, mas sim um histórico de clientes chamados */
-                    System.out.println("\n\t>> ATENDIMENTO: " + clienteAchamar.getNome() + " chamado ao Posto " + postosDeAtendimento[i].getNumero() + " (Senha: " + clienteAchamar.getSenha() + ")");
+                    postoQueChamouClientePorUltimo = new Posto(i+1, true, true, clienteAchamar);
+                    //System.out.println("\n\t>> ATENDIMENTO: " + clienteAchamar.getNome() + " chamado ao Posto " + postosDeAtendimento[i].getNumero() + " (Senha: " + clienteAchamar.getSenha() + ")");
                     return; 
 
                 } else {
 
                     No<Cliente> noAuxiliar = filaUnica.getFila().getInicio();
-                    //clienteAchamar = noAuxiliar.getDado();
                     
                     // percorre a fila em busca de cliente que satisfaça a condição de seleção "P ou N"
                     while (noAuxiliar != null) {
@@ -265,37 +269,37 @@ public class Main {
 
                         if (clienteAchamar.getSenha().getPrioridade() == decideSenhaPouN()) {
 
-                            System.out.println("\t\tclienteAchamar = " + clienteAchamar);
-                            System.out.println("\t\tsenha =          " + clienteAchamar.getSenha());
-
                             filaUnica.removerFilaPrioritaria(clienteAchamar.getSenha().getNumero());
                             postosDeAtendimento[i].clienteEntra(clienteAchamar);
                             pilhaSenhasChamadas.inserirPilha(clienteAchamar.getSenha());
                             historicoAtendidos.inserirPilha(clienteAchamar);
-                            System.out.println("\n\t>> ATENDIMENTO: " + clienteAchamar.getNome() + " chamado ao Posto " + postosDeAtendimento[i].getNumero() + " (Senha: " + clienteAchamar.getSenha() + ")");
+                            postoQueChamouClientePorUltimo = new Posto(i+1, true, true, clienteAchamar);
+                            //System.out.println("\n\t>> ATENDIMENTO: " + clienteAchamar.getNome() + " chamado ao Posto " + postosDeAtendimento[i].getNumero() + " (Senha: " + clienteAchamar.getSenha() + ")");
                             return; 
                         }
                         noAuxiliar = noAuxiliar.getProximo();
                     }
 
-                    System.out.println("\n\t>> AVISO: nenhum cliente satisfaz a condição de prioridade. Chamando o primeiro da fila...");
+                    System.out.println("\n\t>> AVISO: nenhum cliente satisfaz a condição de prioridade N/P. Chamando o primeiro da fila...");
+
                     clienteAchamar = chamaProximoClienteFila();
-
-                    System.out.println("\t\tclienteAchamar = " + clienteAchamar);
-
                     postosDeAtendimento[i].clienteEntra(clienteAchamar);
                     pilhaSenhasChamadas.inserirPilha(clienteAchamar.getSenha());
                     historicoAtendidos.inserirPilha(clienteAchamar);
+                    postoQueChamouClientePorUltimo = new Posto(i+1, true, true, clienteAchamar);
                        
-                    System.out.println("\n\t>> ATENDIMENTO: " + clienteAchamar.getNome() + " chamado ao Posto " + postosDeAtendimento[i].getNumero() + " (Senha: " + clienteAchamar.getSenha() + ")");
+                    //System.out.println("\n\t>> ATENDIMENTO: " + clienteAchamar.getNome() + " chamado ao Posto " + postosDeAtendimento[i].getNumero() + " (Senha: " + clienteAchamar.getSenha() + ")");
                     return; 
-                }
-                
+                }                
             }
         }
+        return;
     }
 
-    /** Apenas retorna o próximo cliente da fila, desconsiderando sua categoria (P ou N) */
+    /** Apenas retorna o próximo cliente da fila, desconsiderando sua categoria (P ou N). Este método é chamado no início da simulação,
+     * quando ninguém foi atendido ainda, e quando nenhum cliente da fila satisfaz a condição de seleção P/N. Por exemplo, se a próxima
+     * senha é P e só existem N na fila, apenas atenda o primeiro da fila.
+     */
     public Cliente chamaProximoClienteFila() {
         return filaUnica.getFila().removerFila();
     }
@@ -338,21 +342,9 @@ public class Main {
      * @return serPrioritaria
     */
     public boolean decideSenhaPouN() {
-        
-        // Se a pilha de chamadas não tiver ao menos 3 senhas, escolhe qualquer senha.
-        /*
-        if (pilhaSenhasChamadas.getTopo() == null ||
-            pilhaSenhasChamadas.getTopo().getProximo() == null ||
-            pilhaSenhasChamadas.getTopo().getProximo().getProximo() == null) {
-            
-            return caraOuCoroa(); 
-        }
-        */
 
         Senha ultimaSenhaChamada = pilhaSenhasChamadas.getTopo().getDado();
-        //System.out.println(ultimaSenhaChamada);
         Senha penultimaSenhaChamada = pilhaSenhasChamadas.getTopo().getAnterior().getDado();
-        //System.out.println(penultimaSenhaChamada);
 
         if (ultimaSenhaChamada.getPrioridade() == true) {
             return false; // último foi P; chamar senha N
@@ -364,8 +356,6 @@ public class Main {
             }
         }
     }
-
-    //public boolean decideQuantidadeMinimaDePostosFuncionando() {}
 
     /** Muda o número de postos funcionando de acordo com o tamanho da fila. O tamanho da fila varia de 0 a infinito.
      * Os valores TAMANHO_FILA_NECESSARIO_PARA_4_POSTOS e TAMANHO_FILA_NECESSARIO_PARA_5_POSTOS são constantes declaradas
@@ -380,11 +370,11 @@ public class Main {
     public void alteraQuantidadeMinimaDePostosFuncionando() {
         if (filaUnica.getFila().getTamanho() >= TAMANHO_FILA_NECESSARIO_PARA_4_POSTOS) {
             postosDeAtendimento[3].setEmFuncionamento(true);
-            System.out.println("\n\t>> AVISO: O posto 4 abriu. ");
+            System.out.println("\n\t>> AVISO: O posto 4 está aberto.");
 
             if (filaUnica.getFila().getTamanho() >= TAMANHO_FILA_NECESSARIO_PARA_5_POSTOS) {
                 postosDeAtendimento[4].setEmFuncionamento(true);
-                System.out.println("\n\t>> AVISO: O posto 5 abriu. ");
+                System.out.println("\n\t>> AVISO: O posto 5 está aberto.");
             }
             else {
                  postosDeAtendimento[4].setEmFuncionamento(false);
@@ -402,13 +392,27 @@ public class Main {
             Cliente novoCliente = new Cliente("Cliente " + totalDeClientes, geraSenha(), geraTempoDeAtendimento());
             filaUnica.getFila().inserirFila(novoCliente);
             totalDeClientes++;
-            System.out.println("\n\t>> AVISO: " + filaUnica.getFila().getFim() + " entrou na fila.");
+            //System.out.println("\n\t>> AVISO: " + filaUnica.getFila().getFim() + " entrou na fila.");
         }
     }
 
-    /** Limpa o terminal. Usado a cada novo turno. */
+    /** Método cosmético para permitir mostrar o último cliente chamado na tela, bem como o posto que o chamou.
+     * O parâmetro <b>postoQueChamouCliente</b> é alimentado no método <b>chamarClientesParaPostosLivres()</b>.
+     * @param postoQueChamouCliente
+    */
+    public void mostraClienteChamadoPorUltimo(Posto postoQueChamouCliente) {
+        System.out.println("\n\t>> AVISO: "
+                            + postoQueChamouCliente.getCliente().getNome()
+                            + " chamado ao Posto nº"
+                            + postoQueChamouCliente.getNumero());
+    }
+
+    /** Limpa o terminal. Usado a cada novo turno. Pode depender de sistema operacional. Talvez não funcione em Windows.
+     * Nesse caso, usar 'cls' nativo do Windows.
+    */
     public static void clearScreen() {
         System.out.print("\033[H\033[2J");
         System.out.flush();
     }
+
 }

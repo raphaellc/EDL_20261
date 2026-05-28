@@ -40,9 +40,9 @@ public class FilaPrioritaria<T> {
 
 		No<Cliente> noAuxiliar = fila.getInicio();
         System.out.println("");
+		System.out.println("FILA =================");
         while (noAuxiliar.getProximo() != null) {
 			System.out.print(mostraClienteCompleto(noAuxiliar.getDado()));
-			//System.out.println("\tCliente proximo = " + noAuxiliar.getProximo());
             noAuxiliar = noAuxiliar.getProximo();
         }
 		System.out.print(mostraClienteCompleto(noAuxiliar.getDado())); // mostra o dado do último nó
@@ -131,9 +131,9 @@ public class FilaPrioritaria<T> {
 		
 
 	public String mostraClienteCompleto(Cliente clienteInformado) {
-		return "\n" + clienteInformado
-		            + ", "
-					+ clienteInformado.getSenha();
+		return "" + clienteInformado
+		          + ", "
+				  + clienteInformado.getSenha() + "\n";
 	}
 
 }
