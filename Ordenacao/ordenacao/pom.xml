@@ -53,7 +53,7 @@
         <artifactId>exec-maven-plugin</artifactId>
         <version>3.2.0</version>
         <configuration>
-          <mainClass>com.algoritmos.VisualizadorAlgoritmos</mainClass>
+          <mainClass>com.algoritmos.Main</mainClass>
         </configuration>
       </plugin>
     </plugins>
